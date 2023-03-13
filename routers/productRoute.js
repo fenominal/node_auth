@@ -38,7 +38,7 @@ router.patch("/updateProdcut", auth, updateSelfProdcut);
 router.get("/getprodcuWithService", auth, insetWithService);
 router.post("/testInsert", insertUser);
 
-//aggregationRouter and Admin Apis
+//aggregationRouter and Admin APIs
 router.get("/getUserProdcut", auth, getOneUserProdcut);
 router.get("/getAll", auth, verifyAdmin, allUserWithProdcut);
 router.get("/getProdcutUser", auth, verifyAdmin, getUserFromProdut);

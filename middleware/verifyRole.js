@@ -3,7 +3,7 @@ import { AsYouType } from "libphonenumber-js";
 export const verifyAdmin = async (req, res, next) => {
   console.log("========= verifyAdmin Middle Ware ======");
   const userRole = req.user.userRole;
-  console.log(typeof userRole);
+  
   if (userRole) {
     if (userRole == "Admin") {
       next();

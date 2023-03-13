@@ -20,6 +20,7 @@ import {
 } from "../controller/getUserProdcut.js";
 
 import auth from "../middleware/auth.js";
+import { verifyAdmin } from "../middleware/verifyRole.js";
 
 const router = express.Router();
 
@@ -31,17 +32,16 @@ router.get("/getprodcut", auth, getSelfOnProdcut);
 
 router.delete("/deleteProdcut", auth, deletSelfProdcut);
 
-router.patch("/updateProdcut/:ID", auth, updateSelfProdcut);
+router.patch("/updateProdcut", auth, updateSelfProdcut);
 
 // testing Router controller.
 router.get("/getprodcuWithService", auth, insetWithService);
 router.post("/testInsert", insertUser);
 
-
-//aggregationRouter
+//aggregationRouter and Admin Apis
 router.get("/getUserProdcut", auth, getOneUserProdcut);
-router.get("/getAll", auth, allUserWithProdcut);
-router.get("/getProdcutUser", auth, getUserFromProdut);
-router.get("/allProdcutDetails", auth, getAllProdcutDetails);
+router.get("/getAll", auth, verifyAdmin, allUserWithProdcut);
+router.get("/getProdcutUser", auth, verifyAdmin, getUserFromProdut);
+router.get("/allProdcutDetails", auth, verifyAdmin, getAllProdcutDetails);
 
 export default router;

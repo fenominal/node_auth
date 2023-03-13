@@ -22,6 +22,9 @@ const userSchema = mongoose.Schema({
   userBio: {
     type: String,
   },
+  userRole:{
+    type:String,
+  },
 });
 
 // Generating Tokens

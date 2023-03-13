@@ -20,8 +20,7 @@ const auth = async (req, res, next) => {
       const { userID } = jwt.verify(token, process.env.JWT_SECRET);
 
       // Get User Information From Token
-      req.user = await users
-        .findById(userID)
+      req.user = await users.findById({_id:userID})
         .select("-password")
         .select("-cpassword");
         // console.log(req.user);
@@ -39,5 +38,6 @@ const auth = async (req, res, next) => {
       .send({ status: "Fail", message: process.env.EMPTY_TOKEN });
   }
 };
+
 
 export default auth;

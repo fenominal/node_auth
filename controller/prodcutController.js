@@ -198,18 +198,25 @@ export const updateSelfProdcut = async (req, res) => {
   );
 
   const { id: _id } = req.user;
-  const prodcutID = req.params.ID;
+  // const prodcutID = req.params.ID;
+  const prodcutID = req.body.prodcutID;
   const { prodcutName, prodcutType, prodcutQuentity, userPosted } = req.body;
-  console.log(!(typeof prodcutQuentity == "number"));
+  
 
   try {
-    if (!prodcutName && !prodcutType && !prodcutQuentity && !userPosted) {
+    if (!prodcutID && !prodcutName && !prodcutType && !prodcutQuentity && !userPosted) {
       res.status(404).send({
         status: "Fail",
         Message:
           "Please Enter value In prodcutName,prodcutType,prodcutQuentity,userPosted ...",
       });
-    } else if (!prodcutName) {
+    }else if(!prodcutID){
+      res.status(404).send({
+        status: "Fail",
+        Message: "Please Enter Prodcut Id...",
+      });
+    }
+     else if (!prodcutName) {
       res.status(404).send({
         status: "Fail",
         Message: "Please Enter Prodcut Name...",

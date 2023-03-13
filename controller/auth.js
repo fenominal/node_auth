@@ -32,8 +32,8 @@ export const signup = async (req, res) => {
 
   try {
     //GET DATA FROM BODY.
-    const { email, password, conform_password, mobile } = req.body;    
-    const loverEmail=email.toLowerCase();// covert email in to lower case...
+    const { email, password, conform_password, mobile } = req.body;
+    const loverEmail = email.toLowerCase(); // covert email in to lower case...
 
     const CheckPhoneReger = /^[6-9]\d{9}$/gi; // Phone Number Reger define local in Function.
     const valid_phone = await CheckPhoneReger.test(mobile);
@@ -87,6 +87,7 @@ export const signup = async (req, res) => {
                     cpassword: hashedCPassword,
                     password: hashedPassword,
                     userMobile: mobile,
+                    userRole: 1,
                   });
                   // console.log(newUser);
                   res.status(200).send({

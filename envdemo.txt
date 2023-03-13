@@ -1,0 +1,40 @@
+MONGOATLAS= #Enter Mongodb atlas connection url here.
+
+PORT= #applicatio running Prot 5000,4000,8080 etc...
+
+JWT_SECRET = #write JWT secret Key...
+
+# Write all error messages here.
+
+# Success Messages...
+SIGNIN_SUCCESS="Sign In Succesfull..."
+LOGIN_SUCCESS="Login Success"
+
+#Invalid Error Messages..
+INVALID_TOKEN_ERROR="Token Is Invalid..."
+INVADLI_EMAIL="Invalid Email..." 
+INVALID_PASSWORD="Password Should be In One Upercase , One Lowercase, One Number and Length is between 8 to 15..."
+INVALID_PHONE="Invalid Phone Number..."
+NOT_ANUMBER_PHONE="Please Enter Numbers Is Mobile...."
+
+# Empty Filed Error Message...
+EMPTY_SIGNUP_ALL="Please Enter Value In email, password, conform_password, mobile ..."
+EMPTY_LOGIN_ALL="Please Enter Email And Password..."
+EMPTY_EMAIL="Please Enter Email ..."
+EMPTY_PASSWORD="Please Enter Password ..."
+EMPTY_CONFORM_PASSWORD="Please Enter Conform Password ..."
+EMPTY_CONFORM_MOBILE="Please Enter Mobile Number ..."
+EMPTY_TOKEN="Token Requierd ..."
+
+# Alredy Used Messages.
+USER_EXISTE="User is alredy exist..."
+NUMBER_EXISTE="Phone Number Alredy used by other user ..."
+PASS_CPASS_MISSMATCH="Password And Confrom Password Not Matched..."
+
+#Catch Error
+SWW="Something Went Worng..."
+
+#Incorrect Messages.
+INCORRECT_EMAIL="Email Not Exist..."
+INCORRECT_PASS="Incorect Password..."
+INVADLI_TOKEN="Unauthorized User...."

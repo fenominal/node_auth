@@ -103,6 +103,7 @@ export const allUserWithProdcut = async (req, res) => {
       },
     },
   ]);
+  console.log(getAll);
   try {
     res.status(200).send({ status: "Success", Message: getAll });
   } catch (error) {

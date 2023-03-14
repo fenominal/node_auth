@@ -7,7 +7,6 @@ export const updateRole = async (req, res) => {
   console.log("======== Admin updateRole Controller. =========");
 
   try {
-    console.log(req.body.userRole != "Seller");
     if (!req.body.userID && !req.body.userRole) {
       res.status(500).send({
         status: "Fail",
@@ -29,7 +28,7 @@ export const updateRole = async (req, res) => {
         if (req.body.userRole == "Seller" || req.body.userRole == "User") {
           res.status(200).send({ status: "Success", message: getUserById });
           const newUser = await users.findByIdAndUpdate(
-            { _id :id },
+            { _id: id },
             {
               $set: {
                 userRole: req.body.userRole,
@@ -38,12 +37,10 @@ export const updateRole = async (req, res) => {
           );
           console.log(newUser);
         } else {
-          res
-            .status(400)
-            .send({
-              status: "Success",
-              message: "Please Enter Valid User Role.....",
-            });
+          res.status(400).send({
+            status: "Success",
+            message: "Please Enter Valid User Role.....",
+          });
         }
       } else {
         res

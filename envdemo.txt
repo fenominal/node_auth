@@ -38,3 +38,6 @@ SWW="Something Went Worng..."
 INCORRECT_EMAIL="Email Not Exist..."
 INCORRECT_PASS="Incorect Password..."
 INVADLI_TOKEN="Unauthorized User...."
+
+#
+INSERT_PLATFORM="Please Enter Platfrom name like :- FaceBook/ Instagram/ Twitter"

@@ -19,8 +19,22 @@ const pordocutSchema = new mongoose.Schema({
     type: String,
     required: "Prodcut must have an postedBy",
   },
+  // platformName: [
+  //   {
+  //     platform: {
+  //       type: String,
+  //       enum: ["FaceBook", "Instagram", "Twitter"], 
+  //       require: true,
+  //     },
+  //   },
+  // ],
+  platformName: {
+    type: String,
+    enum: ["FaceBook", "Instagram", "Twitter","FB","Insta"], // Store only diffine value..
+    require: true,
+  },
   userId: {
-    type: mongoose.Schema.Types.ObjectId,// it make filed type as objectid 
+    type: mongoose.Schema.Types.ObjectId, // it make filed type as objectid
   },
   addOn: {
     type: Date,

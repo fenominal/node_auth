@@ -1,4 +1,4 @@
-// Prodcut model schema file.//
+// Prodcut collection schema file.//
 
 import mongoose from "mongoose";
 

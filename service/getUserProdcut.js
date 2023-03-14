@@ -33,11 +33,23 @@ export const inserIntoUser = async (
   return newUser;
 };
 
+/**
+ * Service function For Encrypt value.
+ * @author Patel Ayush
+ * @param {String} value
+ * @returns {hasedvalue}
+ */
 export const encrypt_value = async (value) => {
   const hasedvalue = await bcrypt.hash(value, 12);
   return hasedvalue;
 };
 
+/**
+ * Service for check empty value.
+ * @author Patel Ayush
+ * @param {String} email
+ * @returns {}
+ */
 export const checkEmptyemail = async (email) => {
  
 };

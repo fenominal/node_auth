@@ -4,8 +4,13 @@ import mongoose from "mongoose";
 
 import prodcutModel from "../models/prodcutModel.js";
 
-// get One User id with added prodcut
-//Aggregation between user -> prodcut
+/**
+ * get One User id with added prodcut... 
+ * Aggregation between user -> prodcut
+ * @author Patel Ayush
+ * @param {String} req
+ * @param {String} res
+ */
 export const getOneUserProdcut = async (req, res) => {
   console.log(
     "====== Authenticate User getOneUserProdcut Controller. ========"
@@ -75,8 +80,14 @@ export const getOneUserProdcut = async (req, res) => {
   }
 };
 
-// Get all User with prodcut
-// Aggregation between users -> prodcut
+
+/**
+ * Get all User with prodcut. 
+ * Aggregation between users -> prodcut.
+ * @author Patel Ayush
+ * @param {String} req
+ * @param {String} res
+ */
 export const allUserWithProdcut = async (req, res) => {
   console.log(
     "====== Authenticate User allUserWithProdcut Controller. ========"
@@ -111,8 +122,13 @@ export const allUserWithProdcut = async (req, res) => {
   }
 };
 
-// Get One Prodcut details by id with user details...
-// Aggregation between prodcut -> users
+/**
+ * Get One Prodcut details by id with user details...
+ *  Aggregation between prodcut -> users
+ * @author Patel Ayush
+ * @param {String} req
+ * @param {String} res
+ */
 export const getUserFromProdut = async (req, res) => {
   console.log(
     "====== Authenticate User getUserFromProdut Controller. ========"
@@ -172,8 +188,14 @@ export const getUserFromProdut = async (req, res) => {
   }
 };
 
-// Get All Prodcut details with user details...
-// Aggregation between prodcut -> users
+
+/**
+ * Get All Prodcut details with user details...
+ * Aggregation between prodcut -> users
+ * @author Patel Ayush
+ * @param {String} req
+ * @param {String} res
+ */
 export const getAllProdcutDetails = async (req, res) => {
   console.log(
     "====== Authenticate User getAllProdcutDetails Controller. ========"

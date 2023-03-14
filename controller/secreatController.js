@@ -21,7 +21,8 @@ var PasswordCheckSchema = new passwordValidator()
 /**
  * Controller Function Get User self Data.
  * @author Patel Ayush
- * @param (request and response)
+ * @param {String} req
+ * @param {String} res
  */
 export const getSelfData = async (req, res) => {
   console.log("======== Authenticate User Self Data Controller. =========");
@@ -45,7 +46,12 @@ export const getSelfData = async (req, res) => {
   }
 };
 
-// Update password...
+/**
+ * Update password...
+ * @author Patel Ayush
+ * @param {String} req
+ * @param {String} res
+ */
 export const selfPassword = async (req, res) => {
   console.log(
     "======== Authenticate User Reset Password Controller. =========="
@@ -111,7 +117,12 @@ export const selfPassword = async (req, res) => {
   }
 };
 
-// Update Email..
+/**
+ * Update Email Controler function....
+ * @author Patel Ayush
+ * @param {String} req
+ * @param {String} res
+ */
 export const updateEmail = async (req, res) => {
   console.log("======= Authenticate User Update Email Controller. ==========");
 
@@ -168,7 +179,12 @@ export const updateEmail = async (req, res) => {
   }
 };
 
-// Update Profile
+/**
+ * Update Profile Controler function....
+ * @author Patel Ayush
+ * @param {String} req
+ * @param {String} res
+ */
 export const profileUpdate = async (req, res) => {
   console.log("======= Authenticae User Update Profile. =========");
   const { id: _id } = req.user; // get user id from token
@@ -330,7 +346,12 @@ export const profileUpdate = async (req, res) => {
   }
 };
 
-// Add Bio
+/**
+ * Add Bio Controler function....
+ * @author Patel Ayush
+ * @param {String} req
+ * @param {String} res
+ */
 export const addBio = async (req, res) => {
   console.log("======== Authenticate User Add BIO controller. ========");
 
@@ -369,7 +390,8 @@ export const addBio = async (req, res) => {
 /**
  * Controller Function Get All User Data.
  * @author Patel Ayush
- * @param (request and response)
+ * @param {String} req
+ * @param {String} res
  */
 export const getAllUserData = async (req, res) => {
   console.log("===== Authenticate User Get All User Data. =======");
@@ -387,7 +409,12 @@ export const getAllUserData = async (req, res) => {
   }
 };
 
-//Delete Bio Data filed.
+/**
+ * Controller Function Get Delete Bio Data filed.
+ * @author Patel Ayush
+ * @param {String} req
+ * @param {String} res
+ */
 export const deleteBio = async (req, res) => {
   console.log("======== Authenticate User Delete BIO controller. ========");
 

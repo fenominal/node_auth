@@ -20,7 +20,7 @@ import adminRouter from "./routers/adminRouter.js";
 import platform from "./routers/platformRoter.js";
 
 // Env file file
-dotenv.config({ path: "./.env" });
+dotenv.config({ path: "./config/.env" });
 
 
 console.log("============ Application Started ==========");

@@ -2,6 +2,13 @@
 
 import { AsYouType } from "libphonenumber-js";
 
+/**
+ * MiddeleWare For Verifying Admin Role.
+ * @author Patel Ayush
+ * @param {String} req
+ * @param {String} res
+ * @param {String} next
+ */
 export const verifyAdmin = async (req, res, next) => {
   console.log("========= verifyAdmin Middle Ware ======");
   const userRole = req.user.userRole;
@@ -19,6 +26,13 @@ export const verifyAdmin = async (req, res, next) => {
   }
 };
 
+/**
+ * MiddeleWare For Verifying User Role.
+ * @author Patel Ayush
+ * @param {String} req
+ * @param {String} res
+ * @param {String} next
+ */
 export const verifyUser = async () => {
   console.log("========= verifyAdmin Middle Ware ======");
   const userRole = req.user.userRole;

@@ -7,7 +7,8 @@ import { getUserProduct } from "../service/getUserProdcut.js";
 /**
  * Controller Function for Inster Prodcut.
  * @author Patel Ayush
- * @param (request and response)
+ * @param {String} req
+ * @param {String} res
  */
 export const insertProdcut = async (req, res) => {
   console.log("======= Authenticate User insertProdcut Controler. =======");
@@ -81,7 +82,8 @@ export const insertProdcut = async (req, res) => {
 /**
  * Controller Function for Get All Product For Loged User.
  * @author Patel Ayush
- * @param (request and response)
+ * @param {String} req
+ * @param {String} res
  */
 export const getSelfProdcut = async (req, res) => {
   console.log("======= Authenticate User getSelfProdcut Controler. =======");
@@ -103,7 +105,8 @@ export const getSelfProdcut = async (req, res) => {
 /**
  * Controller Function For Get One Perticuler Product For Loged User.
  * @author Patel Ayush
- * @param (request and response)
+ * @param {String} req
+ * @param {String} res
  */
 export const getSelfOnProdcut = async (req, res) => {
   console.log("====== Authenticate User getSelfOnProdcut Controller. ========");
@@ -152,7 +155,8 @@ export const getSelfOnProdcut = async (req, res) => {
 /**
  * Controller Function For Delete Prodcut.
  * @author Patel Ayush
- * @param (request and response)
+ * @param {String} req
+ * @param {String} res
  */
 export const deletSelfProdcut = async (req, res) => {
   console.log(
@@ -202,7 +206,8 @@ export const deletSelfProdcut = async (req, res) => {
 /**
  * Controller Function For Update Prodcut.
  * @author Patel Ayush
- * @param (request and response)
+ * @param {String} req
+ * @param {String} res
  */
 export const updateSelfProdcut = async (req, res) => {
   console.log(
@@ -282,7 +287,9 @@ export const updateSelfProdcut = async (req, res) => {
         if (
           platformName != "FaceBook" &&
           platformName != "Instagram" &&
-          platformName != "Twitter"
+          platformName != "Twitter" &&
+          platformName != "Insta" &&
+          platformName != "FB"
         ) {
           res.status(404).send({
             status: "Fail",
@@ -332,6 +339,12 @@ export const updateSelfProdcut = async (req, res) => {
   }
 };
 
+/**
+ * Controller Function For Update Platform.
+ * @author Patel Ayush
+ * @param {String} req
+ * @param {String} res
+ */
 export const updateplatform = async (req, res) => {
   console.log(
     "====== Authenticate User updateSelfProdcut Controller. ========="

@@ -25,7 +25,8 @@ var PasswordCheckSchema = new passwordValidator()
 /**
  * Controller Function for Signup.
  * @author Patel Ayush
- * @param (request and response)
+ * @param {String} req
+ * @param {String} res
  */
 export const signup = async (req, res) => {
   console.log("========== Signup Controller. ==========");
@@ -139,7 +140,8 @@ export const signup = async (req, res) => {
 /**
  * Controller Function for SignIn.
  * @author Patel Ayush
- * @param (request and response)
+ * @param {String} req
+ * @param {String} res
  */
 export const signIn = async (req, res) => {
   console.log("=========== SigIn Controller. ==========");

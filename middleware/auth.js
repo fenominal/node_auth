@@ -6,6 +6,13 @@ import jwt from "jsonwebtoken";
 //import from  usermodel
 import users from "../models/userModel.js";
 
+/**
+ * Auth Middleware for Verfiy User Token...
+ * @author Patel Ayush
+ * @param {String} req
+ * @param {String} res
+ * @param {String} next
+ */
 const auth = async (req, res, next) => {
   console.log("========= Auth Middle Ware ======");
 

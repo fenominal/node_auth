@@ -2,6 +2,11 @@
 
 import mongoose from "mongoose";
 
+/**
+ * Controller Function for SignIn.
+ * @author Patel Ayush
+ * @returns true or false.
+ */
 const connectDB = async () => {
   console.log("Please Wait for connect to Data Base....");
   try {

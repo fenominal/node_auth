@@ -2,9 +2,14 @@
 
 import platfrom from "../models/platfrom.js";
 import prodcutModel from "../models/prodcutModel.js";
-import * as error from "../messages/error.js";// read error file...
+import * as error from "../messages/error.js"; // read error file...
 
-//insert platform in product controller.
+/**
+ * insert platform in product controller...
+ * @author Patel Ayush
+ * @param {String} req
+ * @param {String} res
+ */
 export const inserPlaftformintoprodcut = async (req, res) => {
   console.log("======== Authenticate Add Platform Controller. ========");
   const { id: _id } = req.user;
@@ -38,7 +43,9 @@ export const inserPlaftformintoprodcut = async (req, res) => {
         if (
           platformName != "FaceBook" &&
           platformName != "Instagram" &&
-          platformName != "Twitter"
+          platformName != "Twitter" &&
+          platformName != "Insta" &&
+          platformName != "FB"
         ) {
           res.status(404).send({
             status: "Fail",
@@ -91,7 +98,12 @@ export const inserPlaftformintoprodcut = async (req, res) => {
   }
 };
 
-// Insert platfrom in platfrom collection.
+/**
+ * Insert platfrom in platfrom collection...
+ * @author Patel Ayush
+ * @param {String} req
+ * @param {String} res
+ */
 export const insertplatfrom = async (req, res) => {
   console.log("======== Authenticate Add Platform Controller. ========");
   const { id: _id } = req.user;

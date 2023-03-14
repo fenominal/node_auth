@@ -3,6 +3,13 @@ import users from "../models/userModel.js";
 import prodcutModel from "../models/prodcutModel.js";
 import mongoose from "mongoose";
 
+
+/**
+ * Controller Function for Update Role only admin access.
+ * @author Patel Ayush
+ * @param {String} req
+ * @param {String} res
+ */
 export const updateRole = async (req, res) => {
   console.log("======== Admin updateRole Controller. =========");
 

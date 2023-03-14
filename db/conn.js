@@ -1,4 +1,4 @@
-// // Conection File for monogo atlas.//
+// Conection File for monogo atlas.//
 
 import mongoose from "mongoose";
 

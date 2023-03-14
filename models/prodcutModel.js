@@ -17,7 +17,7 @@ const pordocutSchema = new mongoose.Schema({
   },
   userPosted: {
     type: String,
-    required: "Question must have an author",
+    required: "Prodcut must have an postedBy",
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,// it make filed type as objectid 

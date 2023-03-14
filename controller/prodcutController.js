@@ -13,8 +13,7 @@ export const insertProdcut = async (req, res) => {
   console.log("======= Authenticate User insertProdcut Controler. =======");
   const prodcutData = req.body;
   const { id: _id } = req.user;
-  // console.log(typeof prodcutData.prodcutQuentity);
-
+  
   if (
     !prodcutData.prodcutName &&
     !prodcutData.prodcutType &&
@@ -130,9 +129,10 @@ export const getSelfOnProdcut = async (req, res) => {
       });
     }
   } catch (error) {
-    res
-      .status(500)
-      .send({ Status: "Fail", Message: "Requested prodcut Id Invalid Please Check it..." });
+    res.status(500).send({
+      Status: "Fail",
+      Message: "Requested prodcut Id Invalid Please Check it...",
+    });
     // console.log(error);
   }
 };
@@ -201,22 +201,26 @@ export const updateSelfProdcut = async (req, res) => {
   // const prodcutID = req.params.ID;
   const prodcutID = req.body.prodcutID;
   const { prodcutName, prodcutType, prodcutQuentity, userPosted } = req.body;
-  
 
   try {
-    if (!prodcutID && !prodcutName && !prodcutType && !prodcutQuentity && !userPosted) {
+    if (
+      !prodcutID &&
+      !prodcutName &&
+      !prodcutType &&
+      !prodcutQuentity &&
+      !userPosted
+    ) {
       res.status(404).send({
         status: "Fail",
         Message:
           "Please Enter value In prodcutName,prodcutType,prodcutQuentity,userPosted ...",
       });
-    }else if(!prodcutID){
+    } else if (!prodcutID) {
       res.status(404).send({
         status: "Fail",
         Message: "Please Enter Prodcut Id...",
       });
-    }
-     else if (!prodcutName) {
+    } else if (!prodcutName) {
       res.status(404).send({
         status: "Fail",
         Message: "Please Enter Prodcut Name...",

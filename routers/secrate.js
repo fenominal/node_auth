@@ -29,6 +29,4 @@ router.patch("/updateEmail", auth, updateEmail);
 
 router.delete("/deleteBio", auth, deleteBio);
 
-// router,get("self");
-
 export default router;

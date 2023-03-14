@@ -187,7 +187,8 @@ export const signIn = async (req, res) => {
               { userID: existinguser._id },
               process.env.JWT_SECRET,
               { expiresIn: "5d" }
-            );
+            );// Generate Token with user id....
+            
             res.send({
               status: "Success",
               message: process.env.LOGIN_SUCCESS,

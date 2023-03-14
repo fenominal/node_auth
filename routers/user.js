@@ -8,6 +8,5 @@ const router = express.Router();
 
 router.post("/signup", signup);
 router.post("/login", signIn);
-router.get("/t", (req, res) => {});
 
 export default router;

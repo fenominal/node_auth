@@ -1,4 +1,4 @@
-// atuthenticate user controller file.//
+// atuthenticate user profile curd operation controller file.//
 
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";

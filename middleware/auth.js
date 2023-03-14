@@ -1,6 +1,7 @@
-// Middel 
+// Middleware to get user token....
 
 import jwt from "jsonwebtoken";
+
 
 //import from  usermodel
 import users from "../models/userModel.js";
@@ -38,6 +39,5 @@ const auth = async (req, res, next) => {
       .send({ status: "Fail", message: process.env.EMPTY_TOKEN });
   }
 };
-
 
 export default auth;

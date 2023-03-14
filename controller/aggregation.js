@@ -4,6 +4,8 @@ import mongoose from "mongoose";
 
 import prodcutModel from "../models/prodcutModel.js";
 
+// get One User id with added prodcut
+//Aggregation between user -> prodcut
 export const getOneUserProdcut = async (req, res) => {
   console.log(
     "====== Authenticate User getOneUserProdcut Controller. ========"
@@ -73,6 +75,8 @@ export const getOneUserProdcut = async (req, res) => {
   }
 };
 
+// Get all User with prodcut
+// Aggregation between users -> prodcut
 export const allUserWithProdcut = async (req, res) => {
   console.log(
     "====== Authenticate User allUserWithProdcut Controller. ========"
@@ -92,10 +96,10 @@ export const allUserWithProdcut = async (req, res) => {
         _id: 0,
         password: 0,
         cpassword: 0,
-        __v:0,
+        __v: 0,
         "Prodcut._id": 0,
         "Prodcut.userId": 0,
-        "Prodcut.__v":0
+        "Prodcut.__v": 0,
       },
     },
   ]);
@@ -106,7 +110,8 @@ export const allUserWithProdcut = async (req, res) => {
   }
 };
 
-// Get User details from prodcut...
+// Get One Prodcut details by id with user details...
+// Aggregation between prodcut -> users
 export const getUserFromProdut = async (req, res) => {
   console.log(
     "====== Authenticate User getUserFromProdut Controller. ========"
@@ -159,15 +164,15 @@ export const getUserFromProdut = async (req, res) => {
       }
     }
   } catch (error) {
-    res
-      .status(500)
-      .send({
-        status: "Fail",
-        message: "Requested Id is not valid Please Check.....",
-      });
+    res.status(500).send({
+      status: "Fail",
+      message: "Requested Id is not valid Please Check.....",
+    });
   }
 };
 
+// Get All Prodcut details with user details...
+// Aggregation between prodcut -> users
 export const getAllProdcutDetails = async (req, res) => {
   console.log(
     "====== Authenticate User getAllProdcutDetails Controller. ========"

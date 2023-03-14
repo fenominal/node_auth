@@ -33,19 +33,19 @@ export const signup = async (req, res) => {
   try {
     //GET DATA FROM BODY.
     const { email, password, conform_password, mobile } = req.body;
-    const loverEmail = email.toLowerCase(); // covert email in to lower case...
+    const lowerEmail = email.toLowerCase(); // covert email in to lower case...
 
     const CheckPhoneReger = /^[6-9]\d{9}$/gi; // Phone Number Reger define local in Function.
     const valid_phone = await CheckPhoneReger.test(mobile);
-    const valid_email = validator.isEmail(loverEmail);
+    const valid_email = validator.isEmail(lowerEmail);
     const valid_password = PasswordCheckSchema.validate(password);
 
-    if (!loverEmail && !password && !conform_password && !mobile) {
+    if (!lowerEmail && !password && !conform_password && !mobile) {
       res.status(500).json({
         status: "Fail",
         message: process.env.EMPTY_SIGNUP_ALL,
       });
-    } else if (!loverEmail) {
+    } else if (!lowerEmail) {
       res
         .status(500)
         .json({ status: "Fail", message: process.env.EMPTY_EMAIL });
@@ -69,7 +69,7 @@ export const signup = async (req, res) => {
         message: process.env.NOT_ANUMBER_PHONE,
       });
     } else {
-      const existinguser = await users.findOne({ userEmail: loverEmail });
+      const existinguser = await users.findOne({ userEmail: lowerEmail });
       const existinguserPhone = await users.find({ userMobile: mobile });
       if (valid_email) {
         if (!existinguser) {
@@ -83,7 +83,7 @@ export const signup = async (req, res) => {
                     12
                   );
                   const newUser = await users.create({
-                    userEmail: loverEmail,
+                    userEmail: lowerEmail,
                     cpassword: hashedCPassword,
                     password: hashedPassword,
                     userMobile: mobile,

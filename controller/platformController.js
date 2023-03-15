@@ -122,7 +122,6 @@ export const insertplatfrom = async (req, res) => {
         await postPlatform.save();
         res.status(200).json({ Status: "Success", Message: postPlatform });
       } catch (error) {
-        console.log(error);
         res.status(500).send({
           Status: "Fail",
           Message:
@@ -131,9 +130,9 @@ export const insertplatfrom = async (req, res) => {
       }
     }
   } catch (error) {
-    console.log(error);
     res
       .status(400)
       .json({ Status: "Fail", Message: "Something Went Wrong..." });
   }
 };
+

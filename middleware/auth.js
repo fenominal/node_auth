@@ -1,9 +1,5 @@
 // Middleware to get user token....
-
 import jwt from "jsonwebtoken";
-
-
-//import from  usermodel
 import users from "../models/userModel.js";
 
 /**

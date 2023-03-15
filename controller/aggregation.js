@@ -1,7 +1,7 @@
 // Aggregation Controllers file...
-import users from "../models/userModel.js";
 import mongoose from "mongoose";
 
+import users from "../models/userModel.js";
 import prodcutModel from "../models/prodcutModel.js";
 
 /**
@@ -12,20 +12,20 @@ import prodcutModel from "../models/prodcutModel.js";
  * @param {String} res
  */
 export const getOneUserProdcut = async (req, res) => {
-  console.log(
-    "====== Authenticate User getOneUserProdcut Controller. ========"
-  );
-  const { id: _id } = req.user;
   try {
-    var id = new mongoose.Types.ObjectId(req.body.userID);
-
+    console.log(
+      "====== Authenticate User getOneUserProdcut Controller. ========"
+    );
+    const { id: _id } = req.user;
     if (!req.body.userID) {
       res
         .status(500)
-        .send({ status: "Fail", Message: "Please Enter User Id....." });
+        .send({ status: "Fail", Message: process.env.EMPTY_USERID });
+    } else if (!mongoose.Types.ObjectId.isValid(req.body.userID)) {
+      res.status(500).send({ status: "Fail", Message: process.env.USER_ID });
     } else {
+      var id = new mongoose.Types.ObjectId(req.body.userID);
       const getUserByID = await users.findById({ _id: id });
-      console.log(getUserByID);
       if (getUserByID) {
         const getUserWithProdcut = await users.aggregate([
           {
@@ -47,9 +47,10 @@ export const getOneUserProdcut = async (req, res) => {
             },
           },
         ]);
-
         if (Object.keys(getUserWithProdcut).length === 0) {
-          res.status(200).send({ status: "Fail", Message: "No Data Found..." });
+          res
+            .status(200)
+            .send({ status: "Fail", Message: process.env.EMPTY_DATA });
         } else {
           let var1 = Object.entries(getUserWithProdcut);
           const var2 = var1[0];
@@ -68,14 +69,15 @@ export const getOneUserProdcut = async (req, res) => {
       } else {
         res.status(500).send({
           status: "Fail",
-          Message: "User Not Existe In System.....",
+          Message: process.env.USER_NOTEXISTE,
         });
       }
     }
   } catch (error) {
+    console.log(error);
     res.status(500).send({
       status: "Fail",
-      Message: "Requested Id is not valid Please Check.....",
+      Message: process.env.SWW,
     });
   }
 };
@@ -129,23 +131,24 @@ export const allUserWithProdcut = async (req, res) => {
  * @param {String} res
  */
 export const getUserFromProdut = async (req, res) => {
-  console.log(
-    "====== Authenticate User getUserFromProdut Controller. ========"
-  );
   try {
-    var id = new mongoose.Types.ObjectId(req.body.prodcutId);
-    console.log(typeof id);
-    const getProdcutByName = await prodcutModel.find({ _id: id });
+    console.log(
+      "====== Authenticate User getUserFromProdut Controller. ========"
+    );
 
-    if (!id) {
+    if (!req.body.prodcutId) {
       res
         .status(500)
-        .send({ status: "Fail", Message: "Please Enter Prodcut Id....." });
+        .send({ status: "Fail", Message: process.env.EMPTY_PRODCUTID });
+    } else if (!mongoose.Types.ObjectId.isValid(req.body.prodcutId)) {
+      res.status(500).send({ status: "Fail", Message: process.env.PRODCUT_ID });
     } else {
+      var id = new mongoose.Types.ObjectId(req.body.prodcutId);
+      const getProdcutByName = await prodcutModel.find({ _id: id });
       if (Object.keys(getProdcutByName).length === 0) {
         res
           .status(404)
-          .send({ status: "Fail", Message: "Prodcut Not Existe..." });
+          .send({ status: "Fail", Message: process.env.PRODCUT_NOTEXISTE });
       } else {
         const getUserWithProdcut = await prodcutModel.aggregate([
           {
@@ -169,21 +172,14 @@ export const getUserFromProdut = async (req, res) => {
             },
           },
         ]); // aggregation.
-
-        try {
-          res
-            .status(200)
-            .send({ status: "Success", Message: getUserWithProdcut });
-        } catch (error) {
-          res.status(500).send({ status: "Fail", Message: error });
-        }
+        res
+          .status(200)
+          .send({ status: "Success", Message: getUserWithProdcut });
       }
     }
   } catch (error) {
-    res.status(500).send({
-      status: "Fail",
-      Message: "Requested Id is not valid Please Check.....",
-    });
+    console.log(error);
+    res.status(200).send({ status: "Fail", Message: process.env.SWW });
   }
 };
 
@@ -228,6 +224,7 @@ export const getAllProdcutDetails = async (req, res) => {
 };
 
 // aggregation between 3 collection controllers.
+// user-product-platforms
 
 /**
  * Get All User details with thier added prodcut and added platform...
@@ -295,15 +292,10 @@ export const getoneUserprodcutplatform = async (req, res) => {
     "====== Authenticate User getoneUserprodcutplatform Controller. ========"
   );
   const { id: _id } = req.user;
-
   if (!req.body.userID) {
-    res
-      .status(500)
-      .send({ status: "Fail", Message: "Please Enter User ID..." });
+    res.status(500).send({ status: "Fail", Message: process.env.EMPTY_USERID });
   } else if (!mongoose.Types.ObjectId.isValid(req.body.userID)) {
-    res
-      .status(500)
-      .send({ status: "Fail", Message: "Please Enter valid User ID..." });
+    res.status(500).send({ status: "Fail", Message: process.env.USER_ID });
   } else {
     const UserId = new mongoose.Types.ObjectId(req.body.userID);
     try {
@@ -343,21 +335,22 @@ export const getoneUserprodcutplatform = async (req, res) => {
           },
         ]);
         if (Object.keys(getUserWithProdcut).length === 0) {
-          res.status(500).send({ status: "Fail", Message: "No Data Found..." });
+          res
+            .status(500)
+            .send({ status: "Fail", Message: process.env.EMPTY_DATA });
         } else {
           res
             .status(200)
             .send({ status: "Success", Message: getUserWithProdcut });
         }
       } else {
-        res.status(500).send({
-          status: "Fail",
-          Message: "User Not Existe In System.....",
-        });
+        res
+          .status(500)
+          .send({ status: "Fail", Message: process.env.USER_NOTEXISTE });
       }
     } catch (error) {
       console.log(error);
-      res.status(500).send({ status: "Fail", Message: "error" });
+      res.status(500).send({ status: "Fail", Message: process.env.SWW });
     }
   }
 };

@@ -2,3 +2,4 @@
 .env
 user-token.txt
 query.txt
+query.js

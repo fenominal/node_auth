@@ -296,3 +296,11 @@ export const deletePlatfrom = async (req, res) => {
     res.status(500).send({ Status: "Fail", Error: process.env.SWW });
   }
 };
+
+/**
+ * Get on platfrom by id in platfrom collection...
+ * @author Patel Ayush
+ * @param {String} req
+ * @param {String} res
+ */
+export const getOnePlatform = async ()=>{};

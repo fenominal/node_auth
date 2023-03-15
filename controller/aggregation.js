@@ -4,6 +4,14 @@ import mongoose from "mongoose";
 import users from "../models/userModel.js";
 import prodcutModel from "../models/prodcutModel.js";
 
+import {
+  allUserProdcutPlatform,
+  getUserprodcutplatform,
+  UserWithProdcut,
+  getUserWithProduct,
+  getProdcutUser,
+} from "../service/aggregation.js";
+
 /**
  * get One User id with added prodcut...
  * Aggregation between user -> prodcut
@@ -27,32 +35,13 @@ export const getOneUserProdcut = async (req, res) => {
       var id = new mongoose.Types.ObjectId(req.body.userID);
       const getUserByID = await users.findById({ _id: id });
       if (getUserByID) {
-        const getUserWithProdcut = await users.aggregate([
-          {
-            $lookup: {
-              from: "prodcuts",
-              localField: "_id",
-              foreignField: "userId",
-              as: "Prodcut",
-            },
-          },
-          { $match: { _id: id } },
-          {
-            $project: {
-              _id: 0,
-              password: 0,
-              cpassword: 0,
-              "Prodcut._id": 0,
-              "Prodcut.userId": 0,
-            },
-          },
-        ]);
-        if (Object.keys(getUserWithProdcut).length === 0) {
+        const data = await getUserWithProduct(id);
+        if (Object.keys(data).length === 0) {
           res
             .status(200)
             .send({ status: "Fail", Message: process.env.EMPTY_DATA });
         } else {
-          let var1 = Object.entries(getUserWithProdcut);
+          let var1 = Object.entries(data);
           const var2 = var1[0];
 
           if (Object.keys(var2[1].Prodcut).length === 0) {
@@ -61,9 +50,7 @@ export const getOneUserProdcut = async (req, res) => {
               Message: "No Prodcut Found For This User....",
             });
           } else {
-            res
-              .status(200)
-              .send({ status: "Sucess", Message: getUserWithProdcut });
+            res.status(200).send({ status: "Sucess", Message: data });
           }
         }
       } else {
@@ -93,29 +80,7 @@ export const allUserWithProdcut = async (req, res) => {
   console.log(
     "====== Authenticate User allUserWithProdcut Controller. ========"
   );
-
-  const getAll = await users.aggregate([
-    {
-      $lookup: {
-        from: "prodcuts",
-        localField: "_id",
-        foreignField: "userId",
-        as: "Prodcut",
-      },
-    },
-    {
-      $project: {
-        _id: 0,
-        password: 0,
-        cpassword: 0,
-        __v: 0,
-        "Prodcut._id": 0,
-        "Prodcut.userId": 0,
-        "Prodcut.__v": 0,
-      },
-    },
-  ]);
-
+  const getAll = await UserWithProdcut();
   try {
     res.status(200).send({ status: "Success", Message: getAll });
   } catch (error) {
@@ -125,7 +90,7 @@ export const allUserWithProdcut = async (req, res) => {
 
 /**
  * Get One Prodcut details by id with user details...
- *  Aggregation between prodcut -> users
+ * Aggregation between prodcut -> users
  * @author Patel Ayush
  * @param {String} req
  * @param {String} res
@@ -150,28 +115,7 @@ export const getUserFromProdut = async (req, res) => {
           .status(404)
           .send({ status: "Fail", Message: process.env.PRODCUT_NOTEXISTE });
       } else {
-        const getUserWithProdcut = await prodcutModel.aggregate([
-          {
-            $lookup: {
-              from: "users",
-              localField: "userId",
-              foreignField: "_id",
-              as: "user",
-            },
-          },
-          { $match: { _id: id } },
-          {
-            $project: {
-              _id: 0,
-              userId: 0,
-              __v: 0,
-              "user._id": 0,
-              "user.password": 0,
-              "user.cpassword": 0,
-              "user.__v": 0,
-            },
-          },
-        ]); // aggregation.
+        const getUserWithProdcut = await getProdcutUser(id);
         res
           .status(200)
           .send({ status: "Success", Message: getUserWithProdcut });
@@ -194,7 +138,6 @@ export const getAllProdcutDetails = async (req, res) => {
   console.log(
     "====== Authenticate User getAllProdcutDetails Controller. ========"
   );
-
   const getUserWithProdcut = await prodcutModel.aggregate([
     {
       $lookup: {
@@ -224,7 +167,7 @@ export const getAllProdcutDetails = async (req, res) => {
 };
 
 // aggregation between 3 collection controllers.
-// user-product-platforms
+// Collections :- user-product-platforms
 
 /**
  * Get All User details with thier added prodcut and added platform...
@@ -239,41 +182,9 @@ export const getUserProdcutPlatfrom = async (req, res) => {
     "====== Authenticate User getUserProdcutPlatfrom Controller. ========"
   );
   const { id: _id } = req.user;
-
-  const getUserWithProdcut = await users.aggregate([
-    {
-      $lookup: {
-        from: "prodcuts",
-        localField: "_id",
-        foreignField: "userId",
-        as: "Prodcut",
-      },
-    },
-    {
-      $lookup: {
-        from: "platforms",
-        localField: "_id",
-        foreignField: "userId",
-        as: "Platform",
-      },
-    },
-    {
-      $project: {
-        _id: 0,
-        password: 0,
-        cpassword: 0,
-        __v: 0,
-        "Prodcut._id": 0,
-        "Prodcut.userId": 0,
-        "Prodcut.__v": 0,
-        "Platform._id": 0,
-        "Platform.userId": 0,
-        "Platform.__v": 0,
-      },
-    },
-  ]);
+  const getData = await allUserProdcutPlatform();
   try {
-    res.status(200).send({ status: "Success", Message: getUserWithProdcut });
+    res.status(200).send({ status: "Success", Message: getData });
   } catch (error) {
     res.status(500).send({ status: "Fail", Message: error });
   }
@@ -301,47 +212,14 @@ export const getoneUserprodcutplatform = async (req, res) => {
     try {
       const getUserByID = await users.findById({ _id: UserId });
       if (getUserByID) {
-        const getUserWithProdcut = await users.aggregate([
-          {
-            $lookup: {
-              from: "prodcuts",
-              localField: "_id",
-              foreignField: "userId",
-              as: "Prodcut",
-            },
-          },
-          {
-            $lookup: {
-              from: "platforms",
-              localField: "_id",
-              foreignField: "userId",
-              as: "Platform",
-            },
-          },
-          { $match: { _id: UserId } },
-          {
-            $project: {
-              _id: 0,
-              password: 0,
-              cpassword: 0,
-              __v: 0,
-              "Prodcut._id": 0,
-              "Prodcut.userId": 0,
-              "Prodcut.__v": 0,
-              "Platform._id": 0,
-              "Platform.userId": 0,
-              "Platform.__v": 0,
-            },
-          },
-        ]);
-        if (Object.keys(getUserWithProdcut).length === 0) {
+        
+        const getData = await getUserprodcutplatform(UserId);
+        if (Object.keys(getData).length === 0) {
           res
             .status(500)
             .send({ status: "Fail", Message: process.env.EMPTY_DATA });
         } else {
-          res
-            .status(200)
-            .send({ status: "Success", Message: getUserWithProdcut });
+          res.status(200).send({ status: "Success", Message: getData });
         }
       } else {
         res

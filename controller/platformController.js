@@ -1,4 +1,5 @@
 // platform controller file
+import mongoose from "mongoose";
 
 import platfrom from "../models/platfrom.js";
 import prodcutModel from "../models/prodcutModel.js";
@@ -98,6 +99,8 @@ export const inserPlaftformintoprodcut = async (req, res) => {
   }
 };
 
+//platform collection....
+
 /**
  * Insert platfrom in platfrom collection...
  * @author Patel Ayush
@@ -136,3 +139,159 @@ export const insertplatfrom = async (req, res) => {
   }
 };
 
+/**
+ * Update platfrom in platfrom collection...
+ * @author Patel Ayush
+ * @param {String} req
+ * @param {String} res
+ */
+export const updatePlatform = async (req, res) => {
+  try {
+    console.log("======== Authenticate Add Platform Controller. ========");
+    const { id: _id } = req.user;
+    const platfromId = req.body.platfromId;
+    const platformName = req.body.platformName;
+
+    if (!platfromId && !platformName) {
+      res.status(500).send({
+        Status: "Fail",
+        Message: "Please Enter Platfrom ID And Platfrom Name.",
+      });
+    } else if (!platfromId) {
+      res
+        .status(500)
+        .send({ Status: "Fail", Message: "Please Enter Platfrom ID." });
+    } else if (!platformName) {
+      res
+        .status(500)
+        .send({ Status: "Fail", Message: "Please Enter Platfrom Name." });
+    } else if (!mongoose.Types.ObjectId.isValid(platfromId)) {
+      res
+        .status(500)
+        .send({ status: "Fail", Message: "Please Enter Valid Platfrom Id..." });
+    } else if (
+      platformName != "FaceBook" &&
+      platformName != "Instagram" &&
+      platformName != "Twitter" &&
+      platformName != "Insta" &&
+      platformName != "FB"
+    ) {
+      res
+        .status(404)
+        .send({ status: "Fail", Message: process.env.INSERT_PLATFORM });
+    } else {
+      const findplaatform = await platfrom.findById({ _id: platfromId });
+      if (findplaatform) {
+        const updateProdcut = await platfrom.findOneAndUpdate(
+          { _id: platfromId, userId: _id },
+          {
+            $set: {
+              platformName: platformName,
+            },
+          }
+        );
+        const getupdatePlatfrom = await platfrom
+          .findById({ _id: platfromId })
+          .select("-userId")
+          .select("-__v");
+
+        if (!updateProdcut) {
+          res.status(400).send({
+            status: "Fail",
+            Message: process.env.INVALID_TOKEN_ERROR,
+          });
+        } else {
+          res.status(200).send({
+            status: "Success",
+            Message: "Data Updated...",
+            Update_Record: getupdatePlatfrom,
+          });
+        }
+      } else {
+        res.status(404).send({
+          status: "Fail",
+          Message: "Platfrom Not Exist in System...",
+        });
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ Status: "Fail", Error: error });
+  }
+};
+
+/**
+ * Get all platfrom in platfrom collection...
+ * @author Patel Ayush
+ * @param {String} req
+ * @param {String} res
+ */
+export const getAllPlatform = async (req, res) => {
+  try {
+    console.log("======== Authenticate Add Platform Controller. ========");
+    const { id: _id } = req.user;
+    const getAllPlatform = await platfrom.find(
+      { userId: _id },
+      { userId: 0, __v: 0 }
+    );
+    if (Object.keys(getAllPlatform).length === 0) {
+      res.status(400).json({ status: "Fail", Message: "NO Data Found...." });
+    } else {
+      res.status(200).json({ status: "Success", Data: getAllPlatform });
+    }
+  } catch (error) {
+    res.status(500).send({ Status: "Fail", Error: process.env.SWW });
+    console.log(error);
+  }
+};
+
+/**
+ * Delete platfrom in platfrom collection...
+ * @author Patel Ayush
+ * @param {String} req
+ * @param {String} res
+ */
+export const deletePlatfrom = async (req, res) => {
+  try {
+    console.log("======== Authenticate Add Platform Controller. ========");
+    const { id: _id } = req.user;
+    const platfromId = req.body.platfromId;
+
+    if (!platfromId) {
+      res
+        .status(500)
+        .send({ Status: "Fail", Message: "Please Enter Platfrom ID." });
+    } else if (!mongoose.Types.ObjectId.isValid(platfromId)) {
+      res
+        .status(500)
+        .send({ status: "Fail", Message: "Please Enter Valid Platfrom Id..." });
+    } else {
+      const findplaatform = await platfrom.findById({ _id: platfromId });
+      if (findplaatform) {
+        const deletePlatform = await platfrom.findOneAndDelete({
+          _id: platfromId,
+          userId: _id,
+        });
+        if (deletePlatform) {
+          res.status(200).json({
+            status: "Success",
+            Message: "Platfrom Deleted...",
+          });
+        } else {
+          res.status(400).send({
+            status: "Fail",
+            Message: process.env.INVALID_TOKEN_ERROR,
+          });
+        }
+      } else {
+        res.status(404).send({
+          status: "Fail",
+          Message: "Platfrom Not Exist in System...",
+        });
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ Status: "Fail", Error: process.env.SWW });
+  }
+};

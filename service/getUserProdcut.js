@@ -8,11 +8,11 @@ import users from "../models/userModel.js";
 /**
  * Service Function For Get Prodcut.
  * @author Patel Ayush
- * @param (request and response)
+ * @param {Object} _id
  */
 export const getUserProduct = async (_id) => {
   console.log("======= Get User Prodcut Services. =========");
-  const prodcutbySelf = await prodcutModel.find({ userId: _id });
+  const prodcutbySelf = await prodcutModel.find({ userId: _id },{ _id: 0, userId: 0 });
   return prodcutbySelf;
 };
 

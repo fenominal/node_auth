@@ -267,6 +267,7 @@ export const deletePlatfrom = async (req, res) => {
         .send({ status: "Fail", Message: "Please Enter Valid Platfrom Id..." });
     } else {
       const findplaatform = await platfrom.findById({ _id: platfromId });
+
       if (findplaatform) {
         const deletePlatform = await platfrom.findOneAndDelete({
           _id: platfromId,

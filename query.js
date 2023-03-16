@@ -70,3 +70,7 @@ db.users.aggregate([
     },
   },
 ]);
+
+db.platforms.find({_id:ObjectId("6411528c0a5cffbeff9d62d8"),userId: ObjectId("640ee8d58db9ec705b57bfc6")});
+
+db.platforms.find({$and: [{ _id: "6411528c0a5cffbeff9d62d8"}, { userId: "640ee8d58db9ec705b57bfc6" }],});

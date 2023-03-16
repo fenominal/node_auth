@@ -8,6 +8,7 @@ import {
   getAllPlatform,
   updatePlatform,
   deletePlatfrom,
+  getOnePlatform,
 } from "../controller/platformController.js";
 
 const router = express.Router();
@@ -17,6 +18,7 @@ router.post("/insertPlatforminprodcut", auth, inserPlaftformintoprodcut); // pro
 // Platfrom Collection router.
 router.post("/insertPlatform", auth, insertplatfrom);
 router.get("/getallPlatform", auth, getAllPlatform);
+router.get("/getOneplatfrom",auth,getOnePlatform);
 router.patch("/updatePlatfrom", auth, updatePlatform);
 router.delete("/deletePlatfrom", auth, deletePlatfrom);
 

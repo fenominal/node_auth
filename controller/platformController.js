@@ -147,7 +147,7 @@ export const insertplatfrom = async (req, res) => {
  */
 export const updatePlatform = async (req, res) => {
   try {
-    console.log("======== Authenticate Add Platform Controller. ========");
+    console.log("======== Authenticate updatePlatform Controller. ========");
     const { id: _id } = req.user;
     const platfromId = req.body.platfromId;
     const platformName = req.body.platformName;
@@ -228,7 +228,7 @@ export const updatePlatform = async (req, res) => {
  */
 export const getAllPlatform = async (req, res) => {
   try {
-    console.log("======== Authenticate Add Platform Controller. ========");
+    console.log("======== Authenticate getAllPlatformm Controller. ========");
     const { id: _id } = req.user;
     const getAllPlatform = await platfrom.find(
       { userId: _id },
@@ -253,7 +253,7 @@ export const getAllPlatform = async (req, res) => {
  */
 export const deletePlatfrom = async (req, res) => {
   try {
-    console.log("======== Authenticate Add Platform Controller. ========");
+    console.log("======== Authenticate deletePlatfrom Controller. ========");
     const { id: _id } = req.user;
     const platfromId = req.body.platfromId;
 
@@ -303,4 +303,48 @@ export const deletePlatfrom = async (req, res) => {
  * @param {String} req
  * @param {String} res
  */
-export const getOnePlatform = async ()=>{};
+export const getOnePlatform = async (req, res) => {
+  try {
+    console.log(
+      "======== Authenticate Add getOnePlatform Controller. ========"
+    );
+    const { id: _id } = req.user;
+    const platfromId = req.body.platfromId;
+
+    if (!platfromId) {
+      res
+        .status(500)
+        .send({ Status: "Fail", Message: "Please Enter Platfrom ID." });
+    } else if (!mongoose.Types.ObjectId.isValid(platfromId)) {
+      res
+        .status(500)
+        .send({ status: "Fail", Message: "Please Enter Valid Platfrom Id..." });
+    } else {
+      const requestePlatfrom = await platfrom.findById({ _id: platfromId });
+
+      if (!requestePlatfrom) {
+        res
+          .status(404)
+          .send({ status: "Fail", Message: "Platfrom Not Exist..." });
+      } else {
+        const findeplatform = await platfrom.find({
+          $and: [{ _id: platfromId }, { userId: _id }],
+        });
+        if (Object.keys(findeplatform).length === 0) {
+          res.status(404).send({
+            status: "Fail",
+            Message: process.env.INVALID_TOKEN_ERROR,
+          });
+        } else {
+          res.status(200).send({
+            status: "Success",
+            Data: findeplatform,
+          });
+        }
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ Status: "Fail", Error: process.env.SWW });
+  }
+};

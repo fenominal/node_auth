@@ -18,13 +18,12 @@ export const insertProdcut = async (req, res) => {
     if (
       !prodcutData.prodcutName &&
       !prodcutData.prodcutType &&
-      !prodcutData.prodcutQuentity &&
-      !prodcutData.platformName
+      !prodcutData.prodcutQuentity
     ) {
       res.status(404).send({
         status: "Fail",
         Message:
-          "Please Enter value In prodcutName,prodcutType,prodcutQuentity,userPosted , platformName...",
+          "Please Enter value In prodcutName,prodcutType,prodcutQuentity...",
       });
     } else if (!prodcutData.prodcutName) {
       res.status(404).send({
@@ -46,11 +45,6 @@ export const insertProdcut = async (req, res) => {
         status: "Fail",
         Message: "Please Enter Number In prodcutQuentity...",
       });
-    } else if (!prodcutData.platformName) {
-      res.status(404).send({
-        status: "Fail",
-        Message: "Please Enter Platform Name...",
-      });
     } else {
       const postProdcut = new prodcutModel({ ...prodcutData, userId: _id });
       try {
@@ -63,7 +57,7 @@ export const insertProdcut = async (req, res) => {
       } catch (error) {
         res.status(500).send({
           Status: "Fail",
-          Message: process.env.INSERT_PLATFORM,
+          Message: process.env.SWW,
         });
       }
     }
@@ -211,26 +205,14 @@ export const updateSelfProdcut = async (req, res) => {
   const { id: _id } = req.user;
   // const prodcutID = req.params.ID;
   const prodcutID = req.body.prodcutID;
-  const {
-    prodcutName,
-    prodcutType,
-    prodcutQuentity,
-    userPosted,
-    platformName,
-  } = req.body;
+  const { prodcutName, prodcutType, prodcutQuentity } = req.body;
 
   try {
-    if (
-      !prodcutID &&
-      !prodcutName &&
-      !prodcutType &&
-      !prodcutQuentity &&
-      !platformName
-    ) {
+    if (!prodcutID && !prodcutName && !prodcutType && !prodcutQuentity) {
       res.status(404).send({
         status: "Fail",
         Message:
-          "Please Enter value In prodcutName,prodcutType,prodcutQuentity,userPosted,platformName ...",
+          "Please Enter value In prodcutID,prodcutName,prodcutType,prodcutQuentity ...",
       });
     } else if (!prodcutID) {
       res.status(404).send({
@@ -258,11 +240,6 @@ export const updateSelfProdcut = async (req, res) => {
         status: "Fail",
         Message: "Please Enter Number In prodcutQuentity...",
       });
-    } else if (!platformName) {
-      res.status(404).send({
-        status: "Fail",
-        Message: "Please Enter Platform Name...",
-      });
     } else {
       const findprodcut = await prodcutModel.findById({ _id: prodcutID });
 
@@ -272,49 +249,35 @@ export const updateSelfProdcut = async (req, res) => {
           Message: "Prodcut Not Exist in System...",
         });
       } else {
-        if (
-          platformName != "FaceBook" &&
-          platformName != "Instagram" &&
-          platformName != "Twitter" &&
-          platformName != "Insta" &&
-          platformName != "FB"
-        ) {
-          res.status(404).send({
+        const updateProdcut = await prodcutModel.findOneAndUpdate(
+          { _id: prodcutID, userId: _id },
+          {
+            $set: {
+              prodcutName: prodcutName,
+              prodcutType: prodcutType,
+              prodcutQuentity: prodcutQuentity,
+            },
+          }
+        );
+        const getUpdatedProdcut = await prodcutModel
+          .findById({
+            _id: prodcutID,
+          })
+          .select("-_id")
+          .select("-userId")
+          .select("-__v");
+
+        if (!updateProdcut) {
+          res.status(400).send({
             status: "Fail",
-            Message: process.env.INSERT_PLATFORM,
+            Message: process.env.INVALID_TOKEN_ERROR,
           });
         } else {
-          const updateProdcut = await prodcutModel.findOneAndUpdate(
-            { _id: prodcutID, userId: _id },
-            {
-              $set: {
-                prodcutName: prodcutName,
-                prodcutType: prodcutType,
-                prodcutQuentity: prodcutQuentity,
-                platformName: platformName,
-              },
-            }
-          );
-          const getUpdatedProdcut = await prodcutModel
-            .findById({
-              _id: prodcutID,
-            })
-            .select("-_id")
-            .select("-userId")
-            .select("-__v");
-
-          if (!updateProdcut) {
-            res.status(400).send({
-              status: "Fail",
-              Message: process.env.INVALID_TOKEN_ERROR,
-            });
-          } else {
-            res.status(200).send({
-              status: "Success",
-              Message: "Data Updated...",
-              Update_Record: getUpdatedProdcut,
-            });
-          }
+          res.status(200).send({
+            status: "Success",
+            Message: "Data Updated...",
+            Update_Record: getUpdatedProdcut,
+          });
         }
       }
     }

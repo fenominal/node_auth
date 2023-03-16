@@ -69,6 +69,11 @@ export const signup = async (req, res) => {
         status: "Fail",
         message: process.env.EMPTY_FULLNAME,
       });
+    } else if (fullName.length < 2) {
+      res.status(500).json({
+        status: "Fail",
+        message: "Full Name Have More Than 3 Charater..",
+      });
     } else if (!(typeof mobile == "number")) {
       res.status(500).json({
         status: "Fail",
@@ -94,7 +99,6 @@ export const signup = async (req, res) => {
                     password: hashedPassword,
                     userMobile: mobile,
                     userFullName: fullName,
-                    userRole: 1,
                   });
                   // console.log(newUser);
                   res.status(200).send({
@@ -137,9 +141,8 @@ export const signup = async (req, res) => {
       }
     }
   } catch (error) {
-    res
-      .status(500)
-      .send({ status: "Fail", Message: process.env.SWW, Error: error });
+    console.log(error);
+    res.status(500).send({ status: "Fail", Message: process.env.SWW });
   }
 };
 

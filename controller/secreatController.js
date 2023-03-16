@@ -216,6 +216,11 @@ export const profileUpdate = async (req, res) => {
         status: "Fail",
         message: process.env.EMPTY_FULLNAME,
       });
+    } else if (fullName.length < 2) {
+      res.status(500).json({
+        status: "Fail",
+        message: "Full Name Have More Than 3 Charater..",
+      });
     } else if (!mobile) {
       res.status(500).json({
         status: "Fail",

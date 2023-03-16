@@ -48,10 +48,10 @@ export const iplatform = async (_id) => {
  * @author Patel Ayush
  * @param {Object} _id
  */
-export const deplatform=async(_id)=>{
-    console.log("======= Get deplatform Services. =========");
-    const getUserById = await users.findOneAndUpdate(
-        { _id },
-        { $inc: { userPlatforms: -1 } }
-      );
+export const deplatform = async (_id) => {
+  console.log("======= Get deplatform Services. =========");
+  const getUserById = await users.findOneAndUpdate(
+    { _id },
+    { $inc: { userPlatforms: -1 } }
+  );
 };

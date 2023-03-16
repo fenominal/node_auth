@@ -177,6 +177,8 @@ export const deletePlatfrom = async (req, res) => {
   }
 };
 
+// This api not usefull for now...
+
 /**
  * Get on platfrom by id in platfrom collection...
  * @author Patel Ayush

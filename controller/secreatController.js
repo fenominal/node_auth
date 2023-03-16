@@ -34,7 +34,7 @@ export const selfPassword = async (req, res) => {
   const valid_password = PasswordCheckSchema.validate(password);
   const valid_cpassword = PasswordCheckSchema.validate(password_confirmation);
 
-  const findeUserByID = await users.findById({_id});
+  const findeUserByID = await users.findById({ _id });
   console.log(findeUserByID.password);
 
   if (password || password_confirmation) {
@@ -195,6 +195,37 @@ export const profileUpdate = async (req, res) => {
         message: "Profile Update",
         Profile: getUpdatedProfile,
       });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ status: "Fail", Message: process.env.SWW });
+  }
+};
+
+export const deleteUser = async (req, res) => {
+  console.log("======= Authenticae deleteUser. =========");
+
+  try {
+    const userId = req.body.userID;
+
+    if (!userId) {
+      res
+        .status(500)
+        .send({ status: "Fail", Message: process.env.EMPTY_USERID });
+    } else if (!mongoose.Types.ObjectId.isValid(userId)) {
+      res.status(500).send({ status: "Fail", Message: process.env.USER_ID });
+    } else {
+      const finduseById = await users.findById({ _id: userId });
+      if (!finduseById) {
+        res
+          .status(500)
+          .send({ status: "Fail", Message: process.env.USER_NOTEXISTE });
+      } else {
+        const deleteUserById = await users.findByIdAndDelete({ _id: userId });
+        res
+          .status(200)
+          .send({ status: "Success", Message: "User Deleted...." });
+      }
     }
   } catch (error) {
     console.log(error);

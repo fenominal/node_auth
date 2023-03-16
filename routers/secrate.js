@@ -11,13 +11,14 @@ import {
   getAllUserData,
   addBio,
   deleteBio,
+  deleteUser,
 } from "../controller/secreatController.js";
 
 const router = express.Router();
 
 router.patch("/updatePassword", auth, selfPassword);
-
 router.patch("/profile", auth, profileUpdate);
+router.delete("/deleteUser",auth,deleteUser);
 
 
 // This api not requerid now....

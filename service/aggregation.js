@@ -29,12 +29,6 @@ export const allUserProdcutPlatform = async () => {
         as: "Platform",
       },
     },
-    {
-      $project: {
-        password: 0,
-        cpassword: 0,
-      },
-    },
   ]);
   return getUserWithProdcut;
 };
@@ -66,12 +60,6 @@ export const getUserprodcutplatform = async (UserId) => {
       },
     },
     { $match: { _id: UserId } },
-    {
-      $project: {
-        password: 0,
-        cpassword: 0,
-      },
-    },
   ]);
   return getUserWithProdcut;
 };

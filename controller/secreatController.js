@@ -19,34 +19,6 @@ var PasswordCheckSchema = new passwordValidator()
   .min(8);
 
 /**
- * Controller Function Get User self Data.
- * @author Patel Ayush
- * @param {String} req
- * @param {String} res
- */
-export const getSelfData = async (req, res) => {
-  console.log("======== Authenticate User Self Data Controller. =========");
-
-  const { id: _id } = req.user;
-  try {
-    const logUserID = req.user._id;
-    if (!mongoose.Types.ObjectId.isValid(_id)) {
-      return res
-        .status(400)
-        .send({ Status: "Fail", Message: "User Not Loggin..." });
-    }
-    const UserData = await users.findById(
-      { _id: logUserID },
-      { _id: 0, password: 0, cpassword: 0, __v: 0 }
-    );
-
-    res.status(200).json({ Status: "Success", Data: UserData });
-  } catch (error) {
-    res.status(400).json({ Status: "Fail", Message: "User Not Loggin..." });
-  }
-};
-
-/**
  * Update password...
  * @author Patel Ayush
  * @param {String} req
@@ -62,6 +34,9 @@ export const selfPassword = async (req, res) => {
   const valid_password = PasswordCheckSchema.validate(password);
   const valid_cpassword = PasswordCheckSchema.validate(password_confirmation);
 
+  const findeUserByID = await users.findById({_id});
+  console.log(findeUserByID.password);
+
   if (password || password_confirmation) {
     if (password) {
       if (password_confirmation) {
@@ -72,6 +47,7 @@ export const selfPassword = async (req, res) => {
               password_confirmation,
               12
             );
+
             const newUser = await users.findByIdAndUpdate(
               { _id },
               {
@@ -83,7 +59,7 @@ export const selfPassword = async (req, res) => {
             );
             res.status(200).send({
               status: "Sucess",
-              message: "Password Update.",
+              message: "Your Password Is Updated.",
             });
           } else {
             res.status(400).send({
@@ -114,68 +90,6 @@ export const selfPassword = async (req, res) => {
       status: "Fail",
       message: "Enter Value In password, password_confirmation",
     });
-  }
-};
-
-/**
- * Update Email Controler function....
- * @author Patel Ayush
- * @param {String} req
- * @param {String} res
- */
-export const updateEmail = async (req, res) => {
-  console.log("======= Authenticate User Update Email Controller. ==========");
-
-  try {
-    const { id: _id } = req.user;
-    const { email } = req.body;
-    const lowerEmail = email.toLowerCase(); // covert email in to lower case...
-    const existinguser = await users.findOne({ userEmail: lowerEmail }); // check alredy user email.
-    const logUserEmail = req.user.userEmail;
-    const valid_email = validator.isEmail(lowerEmail);
-
-    if (lowerEmail) {
-      if (valid_email) {
-        if (email != logUserEmail) {
-          if (!existinguser) {
-            const newUser = await users.findByIdAndUpdate(
-              { _id },
-              {
-                $set: {
-                  userEmail: lowerEmail,
-                },
-              }
-            );
-            console.log(newUser);
-            res.status(400).send({
-              status: "Success",
-              message: "Email Updated...",
-            });
-          } else {
-            res.status(400).send({
-              status: "Fail",
-              message: process.env.USER_EXISTE,
-            });
-          }
-        } else {
-          res.status(400).send({
-            status: "Fail",
-            message: process.env.EMAIL_USED,
-          });
-        }
-      } else {
-        res.status(400).send({
-          status: "Fail",
-          message: process.env.INVADLI_EMAIL,
-        });
-      }
-    } else {
-      res
-        .status(400)
-        .send({ status: "Fail", message: process.env.EMPTY_EMAIL });
-    }
-  } catch (err) {
-    res.status(400).send({ status: "Fail", message: `${err}` });
   }
 };
 
@@ -291,6 +205,34 @@ export const profileUpdate = async (req, res) => {
 // This controler is not use for now....
 
 /**
+ * Controller Function Get User self Data.
+ * @author Patel Ayush
+ * @param {String} req
+ * @param {String} res
+ */
+export const getSelfData = async (req, res) => {
+  console.log("======== Authenticate User Self Data Controller. =========");
+
+  const { id: _id } = req.user;
+  try {
+    const logUserID = req.user._id;
+    if (!mongoose.Types.ObjectId.isValid(_id)) {
+      return res
+        .status(400)
+        .send({ Status: "Fail", Message: "User Not Loggin..." });
+    }
+    const UserData = await users.findById(
+      { _id: logUserID },
+      { _id: 0, password: 0, cpassword: 0, __v: 0 }
+    );
+
+    res.status(200).json({ Status: "Success", Data: UserData });
+  } catch (error) {
+    res.status(400).json({ Status: "Fail", Message: "User Not Loggin..." });
+  }
+};
+
+/**
  * Add Bio Controler function....
  * @author Patel Ayush
  * @param {String} req
@@ -386,5 +328,67 @@ export const deleteBio = async (req, res) => {
     res
       .status(400)
       .json({ Status: "Fail", Message: "Something Went Wrong..." });
+  }
+};
+
+/**
+ * Update Email Controler function....
+ * @author Patel Ayush
+ * @param {String} req
+ * @param {String} res
+ */
+export const updateEmail = async (req, res) => {
+  console.log("======= Authenticate User Update Email Controller. ==========");
+
+  try {
+    const { id: _id } = req.user;
+    const { email } = req.body;
+    const lowerEmail = email.toLowerCase(); // covert email in to lower case...
+    const existinguser = await users.findOne({ userEmail: lowerEmail }); // check alredy user email.
+    const logUserEmail = req.user.userEmail;
+    const valid_email = validator.isEmail(lowerEmail);
+
+    if (lowerEmail) {
+      if (valid_email) {
+        if (email != logUserEmail) {
+          if (!existinguser) {
+            const newUser = await users.findByIdAndUpdate(
+              { _id },
+              {
+                $set: {
+                  userEmail: lowerEmail,
+                },
+              }
+            );
+            console.log(newUser);
+            res.status(400).send({
+              status: "Success",
+              message: "Email Updated...",
+            });
+          } else {
+            res.status(400).send({
+              status: "Fail",
+              message: process.env.USER_EXISTE,
+            });
+          }
+        } else {
+          res.status(400).send({
+            status: "Fail",
+            message: process.env.EMAIL_USED,
+          });
+        }
+      } else {
+        res.status(400).send({
+          status: "Fail",
+          message: process.env.INVADLI_EMAIL,
+        });
+      }
+    } else {
+      res
+        .status(400)
+        .send({ status: "Fail", message: process.env.EMPTY_EMAIL });
+    }
+  } catch (err) {
+    res.status(400).send({ status: "Fail", message: `${err}` });
   }
 };

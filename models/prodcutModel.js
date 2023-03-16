@@ -15,10 +15,6 @@ const pordocutSchema = new mongoose.Schema({
     type: Number,
     require: true,
   },
-  userPosted: {
-    type: String,
-    required: "Prodcut must have an postedBy",
-  },
   // platformName: [
   //   {
   //     platform: {
@@ -36,7 +32,7 @@ const pordocutSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId, // it make filed type as objectid
   },
-  addOn: {
+  createdDate: {
     type: Date,
     default: Date.now,
   },

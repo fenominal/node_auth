@@ -19,7 +19,6 @@ export const insertProdcut = async (req, res) => {
       !prodcutData.prodcutName &&
       !prodcutData.prodcutType &&
       !prodcutData.prodcutQuentity &&
-      !prodcutData.userPosted &&
       !prodcutData.platformName
     ) {
       res.status(404).send({
@@ -47,11 +46,6 @@ export const insertProdcut = async (req, res) => {
         status: "Fail",
         Message: "Please Enter Number In prodcutQuentity...",
       });
-    } else if (!prodcutData.userPosted) {
-      res.status(404).send({
-        status: "Fail",
-        Message: "Please Enter Prodcut Posted Name...",
-      });
     } else if (!prodcutData.platformName) {
       res.status(404).send({
         status: "Fail",
@@ -69,7 +63,7 @@ export const insertProdcut = async (req, res) => {
       } catch (error) {
         res.status(500).send({
           Status: "Fail",
-          Message:process.env.INSERT_PLATFORM,
+          Message: process.env.INSERT_PLATFORM,
         });
       }
     }
@@ -231,7 +225,6 @@ export const updateSelfProdcut = async (req, res) => {
       !prodcutName &&
       !prodcutType &&
       !prodcutQuentity &&
-      !userPosted &&
       !platformName
     ) {
       res.status(404).send({
@@ -258,11 +251,6 @@ export const updateSelfProdcut = async (req, res) => {
       res.status(404).send({
         status: "Fail",
         Message: "Please Enter Prodcut Quentity...",
-      });
-    } else if (!userPosted) {
-      res.status(404).send({
-        status: "Fail",
-        Message: "Please Enter Prodcut Posted Name...",
       });
     } else if (!(typeof prodcutQuentity == "number")) {
       // isNaN(prodcutQuentity);
@@ -293,7 +281,7 @@ export const updateSelfProdcut = async (req, res) => {
         ) {
           res.status(404).send({
             status: "Fail",
-            Message:process.env.INSERT_PLATFORM,
+            Message: process.env.INSERT_PLATFORM,
           });
         } else {
           const updateProdcut = await prodcutModel.findOneAndUpdate(
@@ -303,7 +291,6 @@ export const updateSelfProdcut = async (req, res) => {
                 prodcutName: prodcutName,
                 prodcutType: prodcutType,
                 prodcutQuentity: prodcutQuentity,
-                userPosted: userPosted,
                 platformName: platformName,
               },
             }

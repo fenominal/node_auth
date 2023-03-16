@@ -16,6 +16,9 @@ import { updateRole } from "../controller/adminController.js";
 
 const router = express.Router();
 
+router.get("/alluserprodcutplatform", auth, getUserProdcutPlatfrom);
+router.get("/oneuserprodcutplatform", auth, getoneUserprodcutplatform);
+
 // It uncomment whene user access requierd.
 //aggregationRouter and Admin APIs for prodcut aggregation...
 // router.get("/getUserProdcut", auth, verifyAdmin, getOneUserProdcut);
@@ -25,11 +28,10 @@ const router = express.Router();
 // Admin Update other user APIs.....
 // router.patch("/updateUser", auth, verifyAdmin, updateRole);
 
+// This api not use for now...
 router.get("/getUserProdcut", auth, getOneUserProdcut);
 router.get("/getAll", auth, allUserWithProdcut);
 router.get("/getProdcutUser", auth, getUserFromProdut);
 router.get("/allProdcutDetails", auth, getAllProdcutDetails);
 
-router.get("/alluserprodcutplatform", auth, getUserProdcutPlatfrom);
-router.get("/oneuserprodcutplatform", auth, getoneUserprodcutplatform);
 export default router;

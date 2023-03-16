@@ -88,7 +88,7 @@ export const selfPassword = async (req, res) => {
           } else {
             res.status(400).send({
               status: "Fail",
-              message: process.env. PASS_CPASS_MISSMATCH,
+              message: process.env.PASS_CPASS_MISSMATCH,
             });
           }
         } else {
@@ -129,12 +129,12 @@ export const updateEmail = async (req, res) => {
   try {
     const { id: _id } = req.user;
     const { email } = req.body;
-    const loverEmail = email.toLowerCase(); // covert email in to lower case...
-    const existinguser = await users.findOne({ userEmail: loverEmail }); // check alredy user email.
+    const lowerEmail = email.toLowerCase(); // covert email in to lower case...
+    const existinguser = await users.findOne({ userEmail: lowerEmail }); // check alredy user email.
     const logUserEmail = req.user.userEmail;
-    const valid_email = validator.isEmail(loverEmail);
+    const valid_email = validator.isEmail(lowerEmail);
 
-    if (loverEmail) {
+    if (lowerEmail) {
       if (valid_email) {
         if (email != logUserEmail) {
           if (!existinguser) {
@@ -142,7 +142,7 @@ export const updateEmail = async (req, res) => {
               { _id },
               {
                 $set: {
-                  userEmail: loverEmail,
+                  userEmail: lowerEmail,
                 },
               }
             );
@@ -187,162 +187,99 @@ export const updateEmail = async (req, res) => {
  */
 export const profileUpdate = async (req, res) => {
   console.log("======= Authenticae User Update Profile. =========");
-  const { id: _id } = req.user; // get user id from token
-  const { email, password, cpassword, mobile } = req.body; // get data from request body...
-  const loverEmail = email.toLowerCase(); // covert email in to lower case...
-
-  const logUserEmail = req.user.userEmail; // get email from token user.
-  const logUserPhone = req.user.userMobile; //
-  const existinguser = await users.findOne({ userEmail: loverEmail }); // check alredy user email.
-  const existinguserPhone = await users.find({ userMobile: mobile });
-
-  // Check Validations.
-  const CheckPhoneReger = /^[6-9]\d{9}$/gi; // PhoneNumber Regexepration.
-  const valid_phone = CheckPhoneReger.test(mobile);
-  const valid_email = validator.isEmail(loverEmail);
-  const valid_password = PasswordCheckSchema.validate(password);
-  const valid_cpassword = PasswordCheckSchema.validate(cpassword);
 
   try {
-    if (loverEmail || password || cpassword || mobile) {
-      // Check empty value...
-      if (loverEmail) {
-        // empty email..
-        if (password) {
-          // Empty password..
-          if (cpassword) {
-            // Empty conform password.
-            if (mobile) {
-              // Empty mobile...
-              if (valid_email) {
-                // check valid email.
-                if (loverEmail != logUserEmail) {
-                  // check enter email and User email is same or not.
-                  if (!existinguser) {
-                    // check alredy used email
-                    if (valid_password && valid_cpassword) {
-                      // check valid password.
-                      if (password == cpassword) {
-                        // Check password and comform password is same or not.
-                        if (typeof mobile == "number") {
-                          // Chek phone is number or not...
-                          if (valid_phone) {
-                            // Check phone number validation.
-                            if (logUserPhone != mobile) {
-                              if (Object.keys(existinguserPhone).length === 0) {
-                                // Check phone number use by other user or not...
-                                const hashedPassword = await bcrypt.hash(
-                                  password,
-                                  12
-                                );
-                                const hashedCPassword = await bcrypt.hash(
-                                  cpassword,
-                                  12
-                                );
-                                const updatedProfile =
-                                  await users.findByIdAndUpdate(
-                                    _id,
-                                    {
-                                      $set: {
-                                        userEmail: loverEmail,
-                                        cpassword: hashedCPassword,
-                                        password: hashedPassword,
-                                        userMobile: mobile,
-                                      },
-                                    },
-                                    { new: true }
-                                  );
-                                res.status(200).json({
-                                  status: "Success",
-                                  message: "Profile Update",
-                                });
-                              } else {
-                                res.status(500).json({
-                                  status: "Fail",
-                                  message: "Mobile Number Alredy In Use...",
-                                });
-                              }
-                            } else {
-                              res.status(400).send({
-                                status: "Fail",
-                                message: "Entered the same Phone used as earlier...",
-                              });
-                            }
-                          } else {
-                            res.status(400).send({
-                              status: "Fail",
-                              message: process.env.INVALID_PHONE,
-                            });
-                          }
-                        } else {
-                          res.status(500).json({
-                            status: "Fail",
-                            message: process.env.NOT_ANUMBER_PHONE,
-                          });
-                        }
-                      } else {
-                        res.status(400).send({
-                          status: "Fail",
-                          message: process.env.PASS_CPASS_MISSMATCH,
-                        });
-                      }
-                    } else {
-                      res.status(400).send({
-                        status: "Fail",
-                        message: process.env.INVALID_PASSWORD,
-                      });
-                    }
-                  } else {
-                    res.status(400).send({
-                      status: "Fail",
-                      message: process.env.USER_EXISTE,
-                    });
-                  }
-                } else {
-                  res.status(400).send({
-                    status: "Fail",
-                    message: process.env.EMAIL_USED,
-                  });
-                }
-              } else {
-                res
-                  .status(400)
-                  .send({ status: "Fail", message: process.env.INVADLI_EMAIL });
-              }
-            } else {
-              return res.status(400).send({
-                status: "Fail",
-                message: process.env.EMPTY_CONFORM_MOBILE,
-              });
-            }
-          } else {
-            return res.status(400).send({
-              status: "Fail",
-              message: process.env.EMPTY_CONFORM_PASSWORD,
-            });
-          }
-        } else {
-          return res.status(400).send({
-            status: "Fail",
-            message: process.env.EMPTY_PASSWORD,
-          });
-        }
-      } else {
-        return res.status(400).send({
-          status: "Fail",
-          message: process.env.EMPTY_EMAIL,
-        });
-      }
-    } else {
-      return res.status(400).send({
+    const { id: _id } = req.user; // get user id from token
+    const { email, fullName, mobile } = req.body; // get data from request body...
+    const lowerEmail = email.toLowerCase(); // covert email in to lower case...
+
+    // Check Validations.
+    const CheckPhoneReger = /^[6-9]\d{9}$/gi; // PhoneNumber Regexepration.
+    const valid_phone = CheckPhoneReger.test(mobile);
+    const valid_email = validator.isEmail(lowerEmail);
+    const logUserEmail = req.user.userEmail; // get email from token user.
+    const logUserPhone = req.user.userMobile; //
+    const existinguser = await users.findOne({ userEmail: lowerEmail }); // check alredy user email.
+    const existinguserPhone = await users.find({ userMobile: mobile });
+
+    if (!lowerEmail && !fullName && !mobile) {
+      res.status(500).json({
         status: "Fail",
-        message: process.env.EMPTY_SIGNUP_ALL,
+        message: process.env.EMPTY_LOGIN_ALL,
+      });
+    } else if (!lowerEmail) {
+      res
+        .status(500)
+        .json({ status: "Fail", message: process.env.EMPTY_EMAIL });
+    } else if (!fullName) {
+      res.status(500).json({
+        status: "Fail",
+        message: process.env.EMPTY_FULLNAME,
+      });
+    } else if (!mobile) {
+      res.status(500).json({
+        status: "Fail",
+        message: process.env.EMPTY_CONFORM_MOBILE,
+      });
+    } else if (!valid_email) {
+      res
+        .status(500)
+        .send({ status: "Fail", message: process.env.INVADLI_EMAIL });
+    } else if (!valid_phone) {
+      res.status(500).send({
+        status: "Fail",
+        message: process.env.INVALID_PHONE,
+      });
+    } else if (!(typeof mobile == "number")) {
+      res.status(500).json({
+        status: "Fail",
+        message: process.env.NOT_ANUMBER_PHONE,
+      });
+    } else if (lowerEmail == logUserEmail) {
+      res.status(500).send({
+        status: "Fail",
+        message: process.env.EMAIL_USED,
+      });
+    } else if (logUserPhone == mobile) {
+      res.status(500).send({
+        status: "Fail",
+        message: "Entered the same Phone used as earlier...",
+      });
+    } else if (existinguser) {
+      res.status(500).send({
+        status: "Fail",
+        message: "You Are Not Authorize To Perfom This Action...",
+      });
+    } else if (!(Object.keys(existinguserPhone).length === 0)) {
+      res.status(500).json({
+        status: "Fail",
+        message: "You Are Not Authorize To Perfom This Action...",
+      });
+    } else {
+      const updatedProfile = await users.findByIdAndUpdate(
+        _id,
+        {
+          $set: {
+            userEmail: lowerEmail,
+            userFullName: fullName,
+            userMobile: mobile,
+          },
+        },
+        { new: true }
+      );
+      const getUpdatedProfile = await users
+        .findById({ _id })
+        .select("-password")
+        .select("-cpassword");
+      res.status(200).json({
+        status: "Success",
+        message: "Profile Update",
+        Profile: getUpdatedProfile,
       });
     }
   } catch (error) {
-    res
-      .status(500)
-      .send({ status: "Fail", Message: process.env.SWW, Error: error });
+    console.log(error);
+    res.status(500).send({ status: "Fail", Message: process.env.SWW });
   }
 };
 

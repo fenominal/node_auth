@@ -15,18 +15,16 @@ import {
 
 const router = express.Router();
 
-router.get("/get", auth, getSelfData);
-
-router.get("/getAllUserData", auth, getAllUserData);
-
-router.post("/Bio", auth, addBio);
-
 router.patch("/updatePassword", auth, selfPassword);
 
 router.patch("/profile", auth, profileUpdate);
 
-router.patch("/updateEmail", auth, updateEmail);
 
+// This api not requerid now....
+router.post("/Bio", auth, addBio);
 router.delete("/deleteBio", auth, deleteBio);
+router.patch("/updateEmail", auth, updateEmail);
+router.get("/getAllUserData", auth, getAllUserData);
+router.get("/get", auth, getSelfData);
 
 export default router;

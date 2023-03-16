@@ -31,16 +31,8 @@ export const allUserProdcutPlatform = async () => {
     },
     {
       $project: {
-        _id: 0,
         password: 0,
         cpassword: 0,
-        __v: 0,
-        "Prodcut._id": 0,
-        "Prodcut.userId": 0,
-        "Prodcut.__v": 0,
-        "Platform._id": 0,
-        "Platform.userId": 0,
-        "Platform.__v": 0,
       },
     },
   ]);
@@ -76,16 +68,8 @@ export const getUserprodcutplatform = async (UserId) => {
     { $match: { _id: UserId } },
     {
       $project: {
-        _id: 0,
         password: 0,
         cpassword: 0,
-        __v: 0,
-        "Prodcut._id": 0,
-        "Prodcut.userId": 0,
-        "Prodcut.__v": 0,
-        "Platform._id": 0,
-        "Platform.userId": 0,
-        "Platform.__v": 0,
       },
     },
   ]);
@@ -111,10 +95,6 @@ export const UserWithProdcut = async () => {
     },
     {
       $project: {
-        _id: 0,
-        password: 0,
-        cpassword: 0,
-        __v: 0,
         "Prodcut._id": 0,
         "Prodcut.userId": 0,
         "Prodcut.__v": 0,
@@ -145,11 +125,8 @@ export const getUserWithProduct = async (id) => {
     { $match: { _id: id } },
     {
       $project: {
-        _id: 0,
         password: 0,
         cpassword: 0,
-        "Prodcut._id": 0,
-        "Prodcut.userId": 0,
       },
     },
   ]);
@@ -178,10 +155,6 @@ export const getProdcutUser = async (ID) => {
     { $match: { _id: ID } },
     {
       $project: {
-        _id: 0,
-        userId: 0,
-        __v: 0,
-        "user._id": 0,
         "user.password": 0,
         "user.cpassword": 0,
         "user.__v": 0,

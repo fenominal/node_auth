@@ -33,7 +33,7 @@ export const signup = async (req, res) => {
 
   try {
     //GET DATA FROM BODY.
-    const { email, password, conform_password, mobile } = req.body;
+    const { email, fullName, password, conform_password, mobile } = req.body;
     const lowerEmail = email.toLowerCase(); // covert email in to lower case...
 
     const CheckPhoneReger = /^[6-9]\d{9}$/gi; // Phone Number Reger define local in Function.
@@ -41,7 +41,7 @@ export const signup = async (req, res) => {
     const valid_email = validator.isEmail(lowerEmail);
     const valid_password = PasswordCheckSchema.validate(password);
 
-    if (!lowerEmail && !password && !conform_password && !mobile) {
+    if (!lowerEmail && !password && !conform_password && !mobile && !fullName) {
       res.status(500).json({
         status: "Fail",
         message: process.env.EMPTY_SIGNUP_ALL,
@@ -63,6 +63,11 @@ export const signup = async (req, res) => {
       res.status(500).json({
         status: "Fail",
         message: process.env.EMPTY_CONFORM_MOBILE,
+      });
+    } else if (!fullName) {
+      res.status(500).json({
+        status: "Fail",
+        message: process.env.EMPTY_FULLNAME,
       });
     } else if (!(typeof mobile == "number")) {
       res.status(500).json({
@@ -88,6 +93,7 @@ export const signup = async (req, res) => {
                     cpassword: hashedCPassword,
                     password: hashedPassword,
                     userMobile: mobile,
+                    userFullName: fullName,
                     userRole: 1,
                   });
                   // console.log(newUser);
@@ -194,6 +200,7 @@ export const signIn = async (req, res) => {
             res.send({
               status: "Success",
               message: process.env.LOGIN_SUCCESS,
+              UserId: existinguser._id,
               token: token,
             });
           } else {

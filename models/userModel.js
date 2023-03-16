@@ -7,6 +7,10 @@ const userSchema = mongoose.Schema({
     type: String,
     require: true,
   },
+  userFullName: {
+    type: String,
+    require: true,
+  },
   password: {
     type: String,
     require: true,
@@ -22,10 +26,9 @@ const userSchema = mongoose.Schema({
   userBio: {
     type: String,
   },
-  userRole:{
-    type:String,
+  userRole: {
+    type: String,
   },
 });
-
 
 export default mongoose.model("USER", userSchema);

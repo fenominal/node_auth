@@ -6,6 +6,8 @@ import prodcutModel from "../models/prodcutModel.js";
 import users from "../models/userModel.js";
 import * as error from "../messages/error.js"; // read error file...
 
+import { iplatform,deplatform } from "../service/count.js";
+
 //platform collection....
 
 /**
@@ -29,12 +31,7 @@ export const insertplatfrom = async (req, res) => {
       const postPlatform = new platfrom({ platformName, userId: _id });
       try {
         await postPlatform.save();
-        const getUserById = await users.findOneAndUpdate(
-          { _id },
-          { $inc: { userPlatforms: 1 } }
-        );
-
-        console.log(getUserById);
+        await iplatform(_id);
         res.status(200).json({ Status: "Success", Message: postPlatform });
       } catch (error) {
         res.status(500).send({
@@ -159,10 +156,7 @@ export const deletePlatfrom = async (req, res) => {
           userId: _id,
         });
         if (deletePlatform) {
-          const getUserById = await users.findOneAndUpdate(
-            { _id },
-            { $inc: { userPlatforms: -1 } }
-          );
+          await deplatform(_id);          
           res.status(200).json({
             status: "Success",
             Message: "Platfrom Deleted...",

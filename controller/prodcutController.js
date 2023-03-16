@@ -68,79 +68,6 @@ export const insertProdcut = async (req, res) => {
 };
 
 /**
- * Controller Function for Get All Product For Loged User.
- * @author Patel Ayush
- * @param {String} req
- * @param {String} res
- */
-export const getSelfProdcut = async (req, res) => {
-  console.log("======= Authenticate User getSelfProdcut Controler. =======");
-  const { id: _id } = req.user;
-  try {
-    const getData = await getUserProduct(_id); // calling servicess
-
-    if (Object.keys(getData).length === 0) {
-      res.status(400).json({ status: "Fail", Message: "NO Data Found...." });
-    } else {
-      res.status(200).json(getData);
-    }
-  } catch (error) {
-    res.status(500).send({ Status: "Fail", Error: error });
-    console.log(error);
-  }
-};
-
-/**
- * Controller Function For Get One Perticuler Product For Loged User.
- * @author Patel Ayush
- * @param {String} req
- * @param {String} res
- */
-export const getSelfOnProdcut = async (req, res) => {
-  console.log("====== Authenticate User getSelfOnProdcut Controller. ========");
-  const { id: _id } = req.user;
-
-  try {
-    const prodcut_id = req.body.prodcut_id;
-    if (prodcut_id) {
-      const requestprodcut = await prodcutModel.findById({ _id: prodcut_id });
-      if (!requestprodcut) {
-        res
-          .status(404)
-          .send({ status: "Fail", Message: "Prodcut Not Exist..." });
-      } else {
-        const Data = await prodcutModel.find({
-          $and: [{ _id: prodcut_id }, { userId: _id }],
-        });
-        if (Object.keys(Data).length === 0) {
-          console.log(Data);
-          res.status(404).send({
-            status: "Fail",
-            Message: process.env.INVALID_TOKEN_ERROR,
-          });
-        } else {
-          res.status(200).send({
-            status: "Success",
-            Data: Data,
-          });
-        }
-      }
-    } else {
-      res.status(400).send({
-        status: "Fail",
-        Message: "Please Enter Prodcut ID.",
-      });
-    }
-  } catch (error) {
-    res.status(500).send({
-      Status: "Fail",
-      Message: "Requested prodcut Id Invalid Please Check it...",
-    });
-    // console.log(error);
-  }
-};
-
-/**
  * Controller Function For Delete Prodcut.
  * @author Patel Ayush
  * @param {String} req
@@ -289,14 +216,77 @@ export const updateSelfProdcut = async (req, res) => {
   }
 };
 
+// This contoler not usefulll for now....
+
 /**
- * Controller Function For Update Platform.
+ * Controller Function for Get All Product For Loged User.
  * @author Patel Ayush
  * @param {String} req
  * @param {String} res
  */
-export const updateplatform = async (req, res) => {
-  console.log(
-    "====== Authenticate User updateSelfProdcut Controller. ========="
-  );
+export const getSelfProdcut = async (req, res) => {
+  console.log("======= Authenticate User getSelfProdcut Controler. =======");
+  const { id: _id } = req.user;
+  try {
+    const getData = await getUserProduct(_id); // calling servicess
+
+    if (Object.keys(getData).length === 0) {
+      res.status(400).json({ status: "Fail", Message: "NO Data Found...." });
+    } else {
+      res.status(200).json(getData);
+    }
+  } catch (error) {
+    res.status(500).send({ Status: "Fail", Error: error });
+    console.log(error);
+  }
+};
+
+/**
+ * Controller Function For Get One Perticuler Product For Loged User.
+ * @author Patel Ayush
+ * @param {String} req
+ * @param {String} res
+ */
+export const getSelfOnProdcut = async (req, res) => {
+  console.log("====== Authenticate User getSelfOnProdcut Controller. ========");
+  const { id: _id } = req.user;
+
+  try {
+    const prodcut_id = req.body.prodcut_id;
+    if (prodcut_id) {
+      const requestprodcut = await prodcutModel.findById({ _id: prodcut_id });
+      if (!requestprodcut) {
+        res
+          .status(404)
+          .send({ status: "Fail", Message: "Prodcut Not Exist..." });
+      } else {
+        const Data = await prodcutModel.find({
+          $and: [{ _id: prodcut_id }, { userId: _id }],
+        });
+        if (Object.keys(Data).length === 0) {
+          console.log(Data);
+          res.status(404).send({
+            status: "Fail",
+            Message: process.env.INVALID_TOKEN_ERROR,
+          });
+        } else {
+          res.status(200).send({
+            status: "Success",
+            Data: Data,
+          });
+        }
+      }
+    } else {
+      res.status(400).send({
+        status: "Fail",
+        Message: "Please Enter Prodcut ID.",
+      });
+    }
+  } catch (error) {
+    res.status(500).send({
+      Status: "Fail",
+      Message: "Requested prodcut Id Invalid Please Check it...",
+    });
+    // console.log(error);
+  }
 };

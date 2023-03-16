@@ -5,6 +5,7 @@ import platfrom from "../models/platfrom.js";
 import prodcutModel from "../models/prodcutModel.js";
 import * as error from "../messages/error.js"; // read error file...
 
+
 //platform collection....
 
 /**
@@ -78,9 +79,7 @@ export const updatePlatform = async (req, res) => {
     } else if (
       platformName != "FaceBook" &&
       platformName != "Instagram" &&
-      platformName != "Twitter" &&
-      platformName != "Insta" &&
-      platformName != "FB"
+      platformName != "Twitter"
     ) {
       res
         .status(404)
@@ -312,11 +311,10 @@ export const inserPlaftformintoprodcut = async (req, res) => {
                 },
               }
             );
-            const getUpdatedProdcut = await prodcutModel
-              .findById({ _id: prodcutId })
-              .select("-_id")
-              .select("-userId")
-              .select("-__v");
+
+            const getUpdatedProdcut = await prodcutModel.findById({
+              _id: prodcutId,
+            });
 
             if (!updateProdcut) {
               res.status(400).send({
@@ -334,7 +332,7 @@ export const inserPlaftformintoprodcut = async (req, res) => {
             console.log(error);
             res.status(500).send({
               Status: "Fail",
-              Message: "Someting went wrong...",
+              Message: process.env.SWW,
             });
           }
         }

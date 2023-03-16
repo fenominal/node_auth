@@ -12,6 +12,74 @@ import {
   getProdcutUser,
 } from "../service/aggregation.js";
 
+// aggregation between 3 collection controllers.
+// Collections :- user-product-platforms
+
+/**
+ * Get All User details with thier added prodcut and added platform...
+ * Aggregation between User -> prodcut-platform
+ * @author Patel Ayush
+ * @param {String} req
+ * @param {String} res
+ * @returns {Aggrgation}
+ */
+export const getUserProdcutPlatfrom = async (req, res) => {
+  console.log(
+    "====== Authenticate User getUserProdcutPlatfrom Controller. ========"
+  );
+  const { id: _id } = req.user;
+  const getData = await allUserProdcutPlatform();
+  try {
+    res.status(200).send({ status: "Success", Message: getData });
+  } catch (error) {
+    res.status(500).send({ status: "Fail", Message: error });
+  }
+};
+
+/**
+ * Get All User details with thier added prodcut and added platform...
+ * Aggregation between User -> prodcut-platform
+ * @author Patel Ayush
+ * @param {String} req
+ * @param {String} res
+ * @returns {Aggrgation}
+ */
+export const getoneUserprodcutplatform = async (req, res) => {
+  console.log(
+    "====== Authenticate User getoneUserprodcutplatform Controller. ========"
+  );
+  const { id: _id } = req.user;
+  if (!req.body.userID) {
+    res.status(500).send({ status: "Fail", Message: process.env.EMPTY_USERID });
+  } else if (!mongoose.Types.ObjectId.isValid(req.body.userID)) {
+    res.status(500).send({ status: "Fail", Message: process.env.USER_ID });
+  } else {
+    const UserId = new mongoose.Types.ObjectId(req.body.userID);
+    try {
+      const getUserByID = await users.findById({ _id: UserId });
+      if (getUserByID) {
+        const getData = await getUserprodcutplatform(UserId);
+        if (Object.keys(getData).length === 0) {
+          res
+            .status(500)
+            .send({ status: "Fail", Message: process.env.EMPTY_DATA });
+        } else {
+          res.status(200).send({ status: "Success", Message: getData });
+        }
+      } else {
+        res
+          .status(500)
+          .send({ status: "Fail", Message: process.env.USER_NOTEXISTE });
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({ status: "Fail", Message: process.env.SWW });
+    }
+  }
+};
+
+//This controler not use full for now..
+
 /**
  * get One User id with added prodcut...
  * Aggregation between user -> prodcut
@@ -163,72 +231,5 @@ export const getAllProdcutDetails = async (req, res) => {
     res.status(200).send({ status: "Success", Message: getUserWithProdcut });
   } catch (error) {
     res.status(500).send({ status: "Fail", Message: error });
-  }
-};
-
-// aggregation between 3 collection controllers.
-// Collections :- user-product-platforms
-
-/**
- * Get All User details with thier added prodcut and added platform...
- * Aggregation between User -> prodcut-platform
- * @author Patel Ayush
- * @param {String} req
- * @param {String} res
- * @returns {Aggrgation}
- */
-export const getUserProdcutPlatfrom = async (req, res) => {
-  console.log(
-    "====== Authenticate User getUserProdcutPlatfrom Controller. ========"
-  );
-  const { id: _id } = req.user;
-  const getData = await allUserProdcutPlatform();
-  try {
-    res.status(200).send({ status: "Success", Message: getData });
-  } catch (error) {
-    res.status(500).send({ status: "Fail", Message: error });
-  }
-};
-
-/**
- * Get All User details with thier added prodcut and added platform...
- * Aggregation between User -> prodcut-platform
- * @author Patel Ayush
- * @param {String} req
- * @param {String} res
- * @returns {Aggrgation}
- */
-export const getoneUserprodcutplatform = async (req, res) => {
-  console.log(
-    "====== Authenticate User getoneUserprodcutplatform Controller. ========"
-  );
-  const { id: _id } = req.user;
-  if (!req.body.userID) {
-    res.status(500).send({ status: "Fail", Message: process.env.EMPTY_USERID });
-  } else if (!mongoose.Types.ObjectId.isValid(req.body.userID)) {
-    res.status(500).send({ status: "Fail", Message: process.env.USER_ID });
-  } else {
-    const UserId = new mongoose.Types.ObjectId(req.body.userID);
-    try {
-      const getUserByID = await users.findById({ _id: UserId });
-      if (getUserByID) {
-        
-        const getData = await getUserprodcutplatform(UserId);
-        if (Object.keys(getData).length === 0) {
-          res
-            .status(500)
-            .send({ status: "Fail", Message: process.env.EMPTY_DATA });
-        } else {
-          res.status(200).send({ status: "Success", Message: getData });
-        }
-      } else {
-        res
-          .status(500)
-          .send({ status: "Fail", Message: process.env.USER_NOTEXISTE });
-      }
-    } catch (error) {
-      console.log(error);
-      res.status(500).send({ status: "Fail", Message: process.env.SWW });
-    }
   }
 };

@@ -248,17 +248,17 @@ export const profileUpdate = async (req, res) => {
     } else if (logUserPhone == mobile) {
       res.status(500).send({
         status: "Fail",
-        message: "Entered the same Phone used as earlier...",
+        message: process.env.NUMBER_EXISTE,
       });
     } else if (existinguser) {
       res.status(500).send({
         status: "Fail",
-        message: "You Are Not Authorize To Perfom This Action...",
+        message: process.env.USER_EXISTE,
       });
     } else if (!(Object.keys(existinguserPhone).length === 0)) {
       res.status(500).json({
         status: "Fail",
-        message: "You Are Not Authorize To Perfom This Action...",
+        message: process.env.NUMBER_EXISTE,
       });
     } else {
       const updatedProfile = await users.findByIdAndUpdate(
@@ -287,6 +287,8 @@ export const profileUpdate = async (req, res) => {
     res.status(500).send({ status: "Fail", Message: process.env.SWW });
   }
 };
+
+// This controler is not use for now....
 
 /**
  * Add Bio Controler function....

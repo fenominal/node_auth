@@ -99,6 +99,8 @@ export const signup = async (req, res) => {
                     password: hashedPassword,
                     userMobile: mobile,
                     userFullName: fullName,
+                    userProdcuts:0,
+                    userPlatforms:0
                   });
                   // console.log(newUser);
                   res.status(200).send({

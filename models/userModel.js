@@ -29,6 +29,16 @@ const userSchema = mongoose.Schema({
   userRole: {
     type: String,
   },
+  userProdcuts: {
+    type: Number,
+  },
+  userPlatforms: {
+    type: Number,
+  },
+  createdDate: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 export default mongoose.model("USER", userSchema);

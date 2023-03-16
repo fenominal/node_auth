@@ -3,8 +3,8 @@ import mongoose from "mongoose";
 
 import platfrom from "../models/platfrom.js";
 import prodcutModel from "../models/prodcutModel.js";
+import users from "../models/userModel.js";
 import * as error from "../messages/error.js"; // read error file...
-
 
 //platform collection....
 
@@ -17,7 +17,6 @@ import * as error from "../messages/error.js"; // read error file...
 export const insertplatfrom = async (req, res) => {
   console.log("======== Authenticate Add Platform Controller. ========");
   const { id: _id } = req.user;
-  console.log(req.body);
   const platformName = req.body.platformName;
 
   try {
@@ -30,6 +29,12 @@ export const insertplatfrom = async (req, res) => {
       const postPlatform = new platfrom({ platformName, userId: _id });
       try {
         await postPlatform.save();
+        const getUserById = await users.findOneAndUpdate(
+          { _id },
+          { $inc: { userPlatforms: 1 } }
+        );
+
+        console.log(getUserById);
         res.status(200).json({ Status: "Success", Message: postPlatform });
       } catch (error) {
         res.status(500).send({
@@ -154,6 +159,10 @@ export const deletePlatfrom = async (req, res) => {
           userId: _id,
         });
         if (deletePlatform) {
+          const getUserById = await users.findOneAndUpdate(
+            { _id },
+            { $inc: { userPlatforms: -1 } }
+          );
           res.status(200).json({
             status: "Success",
             Message: "Platfrom Deleted...",

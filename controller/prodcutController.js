@@ -1,8 +1,10 @@
 // Authenticate user prodcut curd opration. //
 import prodcutModel from "../models/prodcutModel.js";
+import users from "../models/userModel.js";
 
 // Import servicess
 import { getUserProduct } from "../service/getUserProdcut.js";
+import { iprodcut, deprodcut } from "../service/count.js";
 
 /**
  * Controller Function for Inster Prodcut.
@@ -49,12 +51,15 @@ export const insertProdcut = async (req, res) => {
       const postProdcut = new prodcutModel({ ...prodcutData, userId: _id });
       try {
         await postProdcut.save();
+        await iprodcut(_id); // call increment servicess....
+
         res.status(200).json({
           status: "Success",
           Message: "Prodcut Added...",
           Prodcut: postProdcut,
         });
       } catch (error) {
+        console.log(error);
         res.status(500).send({
           Status: "Fail",
           Message: process.env.SWW,
@@ -98,6 +103,7 @@ export const deletSelfProdcut = async (req, res) => {
             .status(400)
             .json({ status: "Fail", Message: process.env.INVALID_TOKEN_ERROR });
         } else {
+          await deprodcut(_id);
           res.status(200).json({
             status: "Success",
             Message: "Prodcut Deleted...",

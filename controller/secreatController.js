@@ -202,6 +202,12 @@ export const profileUpdate = async (req, res) => {
   }
 };
 
+/**
+ * Delete User Controler function....
+ * @author Patel Ayush
+ * @param {String} req
+ * @param {String} res
+ */
 export const deleteUser = async (req, res) => {
   console.log("======= Authenticae deleteUser. =========");
 

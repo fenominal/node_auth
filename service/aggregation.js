@@ -61,6 +61,8 @@ export const allUserProdcutPlatform = async () => {
       $project: {
         password: 0,
         cpassword: 0,
+        "Prodcut.Orders.userId": 0,
+        "Orders.Prodcut.userId": 0,
       },
     },
   ]);
@@ -126,6 +128,8 @@ export const getUserprodcutplatform = async (UserId) => {
       $project: {
         password: 0,
         cpassword: 0,
+        "Prodcut.Orders.userId": 0,
+        "Orders.Prodcut.userId": 0,
       },
     },
   ]);

@@ -63,6 +63,7 @@ export const allUserProdcutPlatform = async () => {
         cpassword: 0,
         "Prodcut.Orders.userId": 0,
         "Orders.Prodcut.userId": 0,
+        "Platform.userId": 0,
       },
     },
   ]);
@@ -130,6 +131,7 @@ export const getUserprodcutplatform = async (UserId) => {
         cpassword: 0,
         "Prodcut.Orders.userId": 0,
         "Orders.Prodcut.userId": 0,
+        "Platform.userId": 0,
       },
     },
   ]);

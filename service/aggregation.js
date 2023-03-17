@@ -31,24 +31,24 @@ export const allUserProdcutPlatform = async () => {
         as: "Prodcut",
       },
     },
-    {
-      $lookup: {
-        from: "orders",
-        localField: "_id",
-        foreignField: "userId",
-        pipeline: [
-          {
-            $lookup: {
-              from: "prodcuts",
-              localField: "productId",
-              foreignField: "_id",
-              as: "Prodcut",
-            },
-          },
-        ],
-        as: "Orders",
-      },
-    },
+    // {
+    //   $lookup: {
+    //     from: "orders",
+    //     localField: "_id",
+    //     foreignField: "userId",
+    //     pipeline: [
+    //       {
+    //         $lookup: {
+    //           from: "prodcuts",
+    //           localField: "productId",
+    //           foreignField: "_id",
+    //           as: "Prodcut",
+    //         },
+    //       },
+    //     ],
+    //     as: "Orders",
+    //   },
+    // },
     {
       $lookup: {
         from: "platforms",
@@ -64,6 +64,7 @@ export const allUserProdcutPlatform = async () => {
         "Prodcut.Orders.userId": 0,
         "Orders.Prodcut.userId": 0,
         "Platform.userId": 0,
+        
       },
     },
   ]);
@@ -98,24 +99,24 @@ export const getUserprodcutplatform = async (UserId) => {
         as: "Prodcut",
       },
     },
-    {
-      $lookup: {
-        from: "orders",
-        localField: "_id",
-        foreignField: "userId",
-        pipeline: [
-          {
-            $lookup: {
-              from: "prodcuts",
-              localField: "productId",
-              foreignField: "_id",
-              as: "Prodcut",
-            },
-          },
-        ],
-        as: "Orders",
-      },
-    },
+    // {
+    //   $lookup: {
+    //     from: "orders",
+    //     localField: "_id",
+    //     foreignField: "userId",
+    //     pipeline: [
+    //       {
+    //         $lookup: {
+    //           from: "prodcuts",
+    //           localField: "productId",
+    //           foreignField: "_id",
+    //           as: "Prodcut",
+    //         },
+    //       },
+    //     ],
+    //     as: "Orders",
+    //   },
+    // },
     {
       $lookup: {
         from: "platforms",

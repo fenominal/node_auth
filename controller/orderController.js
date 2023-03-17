@@ -158,6 +158,15 @@ export const updateOrder = async (req, res) => {
         Status: "Fail",
         Message: process.env.NOT_ANUMBER_PROQTY,
       });
+    } else if (
+      ordetType != "Online" &&
+      ordetType != "COD" &&
+      ordetType != "Other"
+    ) {
+      res.status(500).send({
+        Status: "Fail",
+        Message: "Please Enter Order type :- Online / COD / Other ",
+      });
     } else {
       const findOrder = await order.findById({ _id: orderId });
       if (!findOrder) {

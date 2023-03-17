@@ -18,7 +18,35 @@ export const allUserProdcutPlatform = async () => {
         from: "prodcuts",
         localField: "_id",
         foreignField: "userId",
+        pipeline: [
+          {
+            $lookup: {
+              from: "orders",
+              localField: "_id",
+              foreignField: "productId",
+              as: "Orders",
+            },
+          },
+        ],
         as: "Prodcut",
+      },
+    },
+    {
+      $lookup: {
+        from: "orders",
+        localField: "_id",
+        foreignField: "userId",
+        pipeline: [
+          {
+            $lookup: {
+              from: "prodcuts",
+              localField: "productId",
+              foreignField: "_id",
+              as: "Prodcut",
+            },
+          },
+        ],
+        as: "Orders",
       },
     },
     {
@@ -27,14 +55,6 @@ export const allUserProdcutPlatform = async () => {
         localField: "_id",
         foreignField: "userId",
         as: "Platform",
-      },
-    },
-    {
-      $lookup: {
-        from: "orders",
-        localField: "_id",
-        foreignField: "userId",
-        as: "Orders",
       },
     },
     {
@@ -62,7 +82,35 @@ export const getUserprodcutplatform = async (UserId) => {
         from: "prodcuts",
         localField: "_id",
         foreignField: "userId",
+        pipeline: [
+          {
+            $lookup: {
+              from: "orders",
+              localField: "_id",
+              foreignField: "productId",
+              as: "Orders",
+            },
+          },
+        ],
         as: "Prodcut",
+      },
+    },
+    {
+      $lookup: {
+        from: "orders",
+        localField: "_id",
+        foreignField: "userId",
+        pipeline: [
+          {
+            $lookup: {
+              from: "prodcuts",
+              localField: "productId",
+              foreignField: "_id",
+              as: "Prodcut",
+            },
+          },
+        ],
+        as: "Orders",
       },
     },
     {
@@ -71,14 +119,6 @@ export const getUserprodcutplatform = async (UserId) => {
         localField: "_id",
         foreignField: "userId",
         as: "Platform",
-      },
-    },
-    {
-      $lookup: {
-        from: "orders",
-        localField: "_id",
-        foreignField: "userId",
-        as: "Orders",
       },
     },
     { $match: { _id: UserId } },

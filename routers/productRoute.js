@@ -8,6 +8,7 @@ import {
   getSelfOnProdcut,
   deletSelfProdcut,
   updateSelfProdcut,
+  getAllProduct
 } from "../controller/prodcutController.js";
 
 import { insetWithService, insertUser } from "../controller/demoController.js"; // demo testing router...
@@ -20,6 +21,7 @@ const router = express.Router();
 router.post("/insertPordcut", auth, insertProdcut);
 router.delete("/deleteProdcut", auth, deletSelfProdcut);
 router.patch("/updateProdcut", auth, updateSelfProdcut);
+router.get("/listofAllProduct",auth,getAllProduct);
 
 // testing Router controller.
 router.get("/getprodcuWithService", auth, insetWithService);

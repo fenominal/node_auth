@@ -132,7 +132,7 @@ export const deletSelfProdcut = async (req, res) => {
  */
 export const updateSelfProdcut = async (req, res) => {
   console.log(
-    "====== Authenticate User updateSelfProdcut Controller. ========="
+    "====== Authenticate User updateSelfProdcut Controller ========="
   );
 
   const { id: _id } = req.user;
@@ -220,6 +220,25 @@ export const updateSelfProdcut = async (req, res) => {
       Message: "Requested Id Invalid Please Check it...",
     });
   }
+};
+
+/**
+ * Controller Function For List Of all Prodcut.
+ * @author Patel Ayush
+ * @param {String} req
+ * @param {String} res
+ */
+export const getAllProduct = async (req, res) => {
+  console.log("====== Authenticate User getAllProduct Controller. =========");
+  try {
+    const { id: _id } = req.user;
+    const getAllProdcut = await prodcutModel.find({});
+    res.status(200).send({ Status: "Success", Prodcuts: getAllProdcut });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ Status: "Fail", Message: process.env.SWW });
+  }
+  const { id: _id } = req.user;
 };
 
 // This contoler not usefulll for now....

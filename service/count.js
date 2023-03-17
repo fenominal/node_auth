@@ -8,7 +8,7 @@ import users from "../models/userModel.js";
  * @param {Object} _id
  */
 export const iprodcut = async (_id) => {
-  console.log("======= Get iprodcut Services. =========");
+  console.log("======= iprodcut Services. =========");
   const getUserById = await users.findOneAndUpdate(
     { _id },
     { $inc: { userProdcuts: 1 } }
@@ -21,7 +21,7 @@ export const iprodcut = async (_id) => {
  * @param {Object} _id
  */
 export const deprodcut = async (_id) => {
-  console.log("======= Get deprodcut Services. =========");
+  console.log("======= deprodcut Services. =========");
   const getUserById = await users.findOneAndUpdate(
     { _id },
     { $inc: { userProdcuts: -1 } }
@@ -34,7 +34,7 @@ export const deprodcut = async (_id) => {
  * @param {Object} _id
  */
 export const iplatform = async (_id) => {
-  console.log("======= Get iplatform Services. =========");
+  console.log("======= iplatform Services. =========");
   const getUserById = await users.findOneAndUpdate(
     { _id },
     { $inc: { userPlatforms: 1 } }
@@ -49,7 +49,7 @@ export const iplatform = async (_id) => {
  * @param {Object} _id
  */
 export const deplatform = async (_id) => {
-  console.log("======= Get deplatform Services. =========");
+  console.log("======= deplatform Services. =========");
   const getUserById = await users.findOneAndUpdate(
     { _id },
     { $inc: { userPlatforms: -1 } }

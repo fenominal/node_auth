@@ -30,6 +30,14 @@ export const allUserProdcutPlatform = async () => {
       },
     },
     {
+      $lookup: {
+        from: "orders",
+        localField: "_id",
+        foreignField: "userId",
+        as: "Orders",
+      },
+    },
+    {
       $project: {
         password: 0,
         cpassword: 0,
@@ -63,6 +71,14 @@ export const getUserprodcutplatform = async (UserId) => {
         localField: "_id",
         foreignField: "userId",
         as: "Platform",
+      },
+    },
+    {
+      $lookup: {
+        from: "orders",
+        localField: "_id",
+        foreignField: "userId",
+        as: "Orders",
       },
     },
     { $match: { _id: UserId } },

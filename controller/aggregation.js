@@ -30,7 +30,7 @@ export const getUserProdcutPlatfrom = async (req, res) => {
   const { id: _id } = req.user;
   const getData = await allUserProdcutPlatform();
   try {
-    res.status(200).send({ status: "Success", Message: getData });
+    res.status(200).send({ status: "Success", Data: getData });
   } catch (error) {
     res.status(500).send({ status: "Fail", Message: error });
   }
@@ -64,7 +64,7 @@ export const getoneUserprodcutplatform = async (req, res) => {
             .status(500)
             .send({ status: "Fail", Message: process.env.EMPTY_DATA });
         } else {
-          res.status(200).send({ status: "Success", Message: getData });
+          res.status(200).send({ status: "Success", Data: getData });
         }
       } else {
         res

@@ -54,7 +54,15 @@ db.users.aggregate([
       as: "Platform",
     },
   },
-  { $match: { _id: ObjectId("6401962b3d3ac9e81b439eb3") } },
+  {
+    $lookup: {
+      from: "orders",
+      localField: "_id",
+      foreignField: "userId",
+      as: "Orders",
+    },
+  },
+  { $match: { _id: ObjectId("641305f30278e1a553adf6b0") } },
   {
     $project: {
       _id: 0,
@@ -71,6 +79,14 @@ db.users.aggregate([
   },
 ]);
 
-db.platforms.find({_id:ObjectId("6411528c0a5cffbeff9d62d8"),userId: ObjectId("640ee8d58db9ec705b57bfc6")});
+db.platforms.find({
+  _id: ObjectId("6411528c0a5cffbeff9d62d8"),
+  userId: ObjectId("640ee8d58db9ec705b57bfc6"),
+});
 
-db.platforms.find({$and: [{ _id: "6411528c0a5cffbeff9d62d8"}, { userId: "640ee8d58db9ec705b57bfc6" }],});
+db.platforms.find({
+  $and: [
+    { _id: "6411528c0a5cffbeff9d62d8" },
+    { userId: "640ee8d58db9ec705b57bfc6" },
+  ],
+});

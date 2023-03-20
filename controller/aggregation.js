@@ -78,6 +78,45 @@ export const getoneUserprodcutplatform = async (req, res) => {
   }
 };
 
+/**
+ * Get All Prodcut details with user details...
+ * Aggregation between prodcut -> users
+ * @author Patel Ayush
+ * @param {String} req
+ * @param {String} res
+ */
+export const getAllProdcutDetails = async (req, res) => {
+  console.log(
+    "====== Authenticate User getAllProdcutDetails Controller. ========"
+  );
+  const getUserWithProdcut = await prodcutModel.aggregate([
+    {
+      $lookup: {
+        from: "users",
+        localField: "userId",
+        foreignField: "_id",
+        as: "user",
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        userId: 0,
+        __v: 0,
+        "user._id": 0,
+        "user.password": 0,
+        "user.cpassword": 0,
+        "user.__v": 0,
+      },
+    },
+  ]);
+  try {
+    res.status(200).send({ status: "Success", Data: getUserWithProdcut });
+  } catch (error) {
+    res.status(500).send({ status: "Fail", Message: error });
+  }
+};
+
 //This controler not use full for now..
 
 /**
@@ -192,44 +231,5 @@ export const getUserFromProdut = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(200).send({ status: "Fail", Message: process.env.SWW });
-  }
-};
-
-/**
- * Get All Prodcut details with user details...
- * Aggregation between prodcut -> users
- * @author Patel Ayush
- * @param {String} req
- * @param {String} res
- */
-export const getAllProdcutDetails = async (req, res) => {
-  console.log(
-    "====== Authenticate User getAllProdcutDetails Controller. ========"
-  );
-  const getUserWithProdcut = await prodcutModel.aggregate([
-    {
-      $lookup: {
-        from: "users",
-        localField: "userId",
-        foreignField: "_id",
-        as: "user",
-      },
-    },
-    {
-      $project: {
-        _id: 0,
-        userId: 0,
-        __v: 0,
-        "user._id": 0,
-        "user.password": 0,
-        "user.cpassword": 0,
-        "user.__v": 0,
-      },
-    },
-  ]);
-  try {
-    res.status(200).send({ status: "Success", Message: getUserWithProdcut });
-  } catch (error) {
-    res.status(500).send({ status: "Fail", Message: error });
   }
 };

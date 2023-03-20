@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 
 import users from "../models/userModel.js";
 import prodcutModel from "../models/prodcutModel.js";
+import order from "../models/order.js";
 
 /**
  * Service Function For Aggregation for get all user data with prodcut and added platform.
@@ -64,7 +65,6 @@ export const allUserProdcutPlatform = async () => {
         "Prodcut.Orders.userId": 0,
         "Orders.Prodcut.userId": 0,
         "Platform.userId": 0,
-        
       },
     },
   ]);
@@ -133,6 +133,35 @@ export const getUserprodcutplatform = async (UserId) => {
         "Prodcut.Orders.userId": 0,
         "Orders.Prodcut.userId": 0,
         "Platform.userId": 0,
+      },
+    },
+  ]);
+  return getUserWithProdcut;
+};
+
+/**
+ * Service Function For Aggregation for get one prodcut data with prodcut .
+ * users->products-platforms
+ * @author Patel Ayush
+ * @param {Object} UserId
+ * @returns getUserWithProdcut
+ */
+export const getOrderWithProduct = async () => {
+  console.log("======= Get getOrderWithProduct Services. =========");
+  const getUserWithProdcut = await order.aggregate([
+    {
+      $lookup: {
+        from: "users",
+        localField: "userId",
+        foreignField: "_id",
+        as: "Users",
+      },
+    },
+    // { $match: { _id: id } },
+    {
+      $project: {
+        "Users.cpassword": 0,
+        "Users.password": 0,
       },
     },
   ]);

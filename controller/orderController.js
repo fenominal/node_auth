@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 
 // import model files...
 import order from "../models/order.js";
-import prodcutModel from "../models/prodcutModel.js";
+import { getOrderWithProduct } from "../service/aggregation.js";
 
 // Import service file..
 
@@ -261,8 +261,8 @@ export const getAllOrder = async (req, res) => {
   console.log("======= Authenticate getAllOrder Controler. =======");
   try {
     const { id: _id } = req.user;
-    const allOrder = await order.find({});
-    res.status(200).send({ Status: "Success", Orders: allOrder });
+    const getdata=await getOrderWithProduct();// call agregation service..
+    res.status(200).send({ Status: "Success", Orders: getdata });
   } catch (error) {
     console.log(error);
     res.status(500).send({ Status: "Fail", Message: process.env.SWW });

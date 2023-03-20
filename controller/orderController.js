@@ -4,7 +4,10 @@ import mongoose from "mongoose";
 
 // import model files...
 import order from "../models/order.js";
-import { getOrderWithProduct } from "../service/aggregation.js";
+import {
+  getOrderWithProduct,
+  getOneOrderWithproduct,
+} from "../service/aggregation.js";
 
 // Import service file..
 
@@ -261,8 +264,50 @@ export const getAllOrder = async (req, res) => {
   console.log("======= Authenticate getAllOrder Controler. =======");
   try {
     const { id: _id } = req.user;
-    const getdata=await getOrderWithProduct();// call agregation service..
+    const getdata = await getOrderWithProduct(); // call agregation service..
     res.status(200).send({ Status: "Success", Orders: getdata });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ Status: "Fail", Message: process.env.SWW });
+  }
+};
+
+/**
+ * Controller Function For Get One Order..
+ * @author Patel Ayush
+ * @param {String} req
+ * @param {String} res
+ */
+export const getOneOrderDetails = async (req, res) => {
+  console.log("======= Authenticate getOneOrderDetails Controler. =======");
+  try {
+    const { id: _id } = req.user;
+    const orderId = req.body.orderID;
+    if (!orderId) {
+      res
+        .status(500)
+        .send({ status: "Fail", Message: process.env.EMPTY_ORDERID });
+    } else if (!mongoose.Types.ObjectId.isValid(orderId)) {
+      res.status(500).send({ status: "Fail", Message: process.env.ORDER_ID });
+    } else {
+      const findOrder = await order.findById({ _id: orderId });
+      if (!findOrder) {
+        res.status(404).send({ status: "Fail", Message: "Order Not Exist..." });
+      } else {
+        const orderByFilter = await order.findOne({
+          _id: orderId,
+          userId: _id,
+        });
+        if (!orderByFilter) {
+          res
+            .status(400)
+            .json({ status: "Fail", Message: process.env.INVALID_TOKEN_ERROR });
+        } else {
+          const result = await getOneOrderWithproduct(orderId);
+          res.status(200).send({ status: "Success", Data: result });
+        }
+      }
+    }
   } catch (error) {
     console.log(error);
     res.status(500).send({ Status: "Fail", Message: process.env.SWW });

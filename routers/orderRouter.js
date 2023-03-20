@@ -9,6 +9,7 @@ import {
   deleteProdcut,
   getAllOrder,
   updateOrder,
+  getOneOrderDetails,
 } from "../controller/orderController.js";
 
 const router = express.Router();
@@ -17,7 +18,8 @@ const router = express.Router();
 
 router.post("/orderProdcut", auth, orderProduct);
 router.delete("/cancelOrder", auth, deleteProdcut);
-router.patch("/updateOrder",auth,updateOrder);
+router.patch("/updateOrder", auth, updateOrder);
 router.get("/allOrder", auth, getAllOrder);
+router.get("/getOneOrder",auth,getOneOrderDetails);
 
 export default router;

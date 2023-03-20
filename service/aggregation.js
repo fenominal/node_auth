@@ -140,21 +140,28 @@ export const getUserprodcutplatform = async (UserId) => {
 };
 
 /**
- * Service Function For Aggregation for get one prodcut data with prodcut .
+ * Service Function For Aggregation for get order data with prodcut .
  * users->products-platforms
  * @author Patel Ayush
- * @param {Object} UserId
- * @returns getUserWithProdcut
+ * @returns getOrderWithUser
  */
 export const getOrderWithProduct = async () => {
   console.log("======= Get getOrderWithProduct Services. =========");
-  const getUserWithProdcut = await order.aggregate([
+  const getOrderWithUser = await order.aggregate([
     {
       $lookup: {
         from: "users",
         localField: "userId",
         foreignField: "_id",
         as: "Users",
+      },
+    },
+    {
+      $lookup: {
+        from: "prodcuts",
+        localField: "productId",
+        foreignField: "_id",
+        as: "Prodcut",
       },
     },
     // { $match: { _id: id } },
@@ -165,7 +172,38 @@ export const getOrderWithProduct = async () => {
       },
     },
   ]);
-  return getUserWithProdcut;
+  return getOrderWithUser;
+};
+
+export const getOneOrderWithproduct = async (OrderID) => {
+  console.log("======= Get getOneOrderWithproduct Services. =========");
+  const convertID = new mongoose.Types.ObjectId(OrderID);
+  const getOrderWithUser = await order.aggregate([
+    {
+      $lookup: {
+        from: "users",
+        localField: "userId",
+        foreignField: "_id",
+        as: "Users",
+      },
+    },
+    {
+      $lookup: {
+        from: "prodcuts",
+        localField: "productId",
+        foreignField: "_id",
+        as: "Prodcut",
+      },
+    },
+    { $match: { _id: convertID } },
+    {
+      $project: {
+        "Users.cpassword": 0,
+        "Users.password": 0,
+      },
+    },
+  ]);
+  return getOrderWithUser;
 };
 
 /**

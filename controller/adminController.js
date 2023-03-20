@@ -1,6 +1,5 @@
 // Not requier Now
 import users from "../models/userModel.js";
-import prodcutModel from "../models/prodcutModel.js";
 import mongoose from "mongoose";
 
 

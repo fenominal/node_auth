@@ -3,10 +3,9 @@ import mongoose from "mongoose";
 
 import platfrom from "../models/platfrom.js";
 import prodcutModel from "../models/prodcutModel.js";
-import users from "../models/userModel.js";
 import * as error from "../messages/error.js"; // read error file...
 
-import { iplatform,deplatform } from "../service/count.js";
+import { iplatform, deplatform } from "../service/count.js";
 
 //platform collection....
 
@@ -156,7 +155,7 @@ export const deletePlatfrom = async (req, res) => {
           userId: _id,
         });
         if (deletePlatform) {
-          await deplatform(_id);          
+          await deplatform(_id);
           res.status(200).json({
             status: "Success",
             Message: "Platfrom Deleted...",
@@ -333,11 +332,11 @@ export const inserPlaftformintoprodcut = async (req, res) => {
                 Update_Record: getUpdatedProdcut,
               });
             }
-          } catch (error) {
-            console.log(error);
+          } catch (err) {
+            console.log(err);
             res.status(500).send({
               Status: "Fail",
-              Message: process.env.SWW,
+              Message: error.SWW,
             });
           }
         }

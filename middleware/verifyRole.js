@@ -1,7 +1,5 @@
 // middleware for verify user roles...
 
-import { AsYouType } from "libphonenumber-js";
-
 /**
  * MiddeleWare For Verifying Admin Role.
  * @author Patel Ayush
@@ -12,7 +10,7 @@ import { AsYouType } from "libphonenumber-js";
 export const verifyAdmin = async (req, res, next) => {
   console.log("========= verifyAdmin Middle Ware ======");
   const userRole = req.user.userRole;
-  
+
   if (userRole) {
     if (userRole == "Admin") {
       next();
@@ -43,7 +41,10 @@ export const verifyUser = async () => {
     } else {
       res
         .status(401)
-        .send({ status: "Fail", message: "Only Admin And Seller Have Access....." });
+        .send({
+          status: "Fail",
+          message: "Only Admin And Seller Have Access.....",
+        });
     }
   } else {
     res.status(401).send({ status: "Fail", message: "Invalid User....." });

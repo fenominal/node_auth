@@ -12,7 +12,7 @@ import {
   getoneUserprodcutplatform,
 } from "../controller/aggregation.js";
 
-import { updateRole } from "../controller/adminController.js";
+// import { updateRole } from "../controller/adminController.js";
 
 const router = express.Router();
 

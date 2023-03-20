@@ -8,6 +8,7 @@ import jwt from "jsonwebtoken";
 
 //import from  usermodel
 import users from "../models/userModel.js";
+import * as error_message from "../messages/error.js";
 
 // Password Schema
 var PasswordCheckSchema = new passwordValidator()
@@ -44,40 +45,35 @@ export const signup = async (req, res) => {
     if (!lowerEmail && !password && !conform_password && !mobile && !fullName) {
       res.status(500).json({
         status: "Fail",
-        message: process.env.EMPTY_SIGNUP_ALL,
+        message: error_message.EMPTY_SIGNUP_ALL,
       });
     } else if (!lowerEmail) {
       res
         .status(500)
-        .json({ status: "Fail", message: process.env.EMPTY_EMAIL });
+        .json({ status: "Fail", message: error_message.EMPTY_EMAIL });
     } else if (!password) {
       res
         .status(500)
-        .json({ status: "Fail", message: process.env.EMPTY_PASSWORD });
+        .json({ status: "Fail", message: error_message.EMPTY_PASSWORD });
     } else if (!conform_password) {
       res.status(500).json({
         status: "Fail",
-        message: process.env.EMPTY_CONFORM_PASSWORD,
+        message: error_message.EMPTY_CONFORM_PASSWORD,
       });
     } else if (!mobile) {
       res.status(500).json({
         status: "Fail",
-        message: process.env.EMPTY_CONFORM_MOBILE,
+        message: error_message.EMPTY_MOBILE,
       });
     } else if (!fullName) {
       res.status(500).json({
         status: "Fail",
-        message: process.env.EMPTY_FULLNAME,
-      });
-    } else if (fullName.length < 2) {
-      res.status(500).json({
-        status: "Fail",
-        message: "Full Name Have More Than 3 Charater..",
+        message: error_message.EMPTY_FULLNAME,
       });
     } else if (!(typeof mobile == "number")) {
       res.status(500).json({
         status: "Fail",
-        message: process.env.NOT_ANUMBER_PHONE,
+        message: error_message.NOT_ANUMBER_PHONE,
       });
     } else {
       const existinguser = await users.findOne({ userEmail: lowerEmail });
@@ -99,52 +95,52 @@ export const signup = async (req, res) => {
                     password: hashedPassword,
                     userMobile: mobile,
                     userFullName: fullName,
-                    userProdcuts:0,
-                    userPlatforms:0
+                    userProdcuts: 0,
+                    userPlatforms: 0,
                   });
                   // console.log(newUser);
                   res.status(200).send({
                     status: "Success",
-                    Message: process.env.SIGNIN_SUCCESS,
+                    Message: error_message.SIGNIN_SUCCESS,
                   });
                 } else {
                   return res.status(400).json({
                     status: "Fail",
-                    Message: process.env.INVALID_PHONE,
+                    Message: error_message.INVALID_PHONE,
                   });
                 }
               } else {
                 return res.status(400).json({
                   status: "Fail",
-                  Message: process.env.PASS_CPASS_MISSMATCH,
+                  Message: error_message.PASS_CPASS_MISSMATCH,
                 });
               }
             } else {
               return res.status(400).json({
                 status: "Fail",
-                Message: process.env.INVALID_PASSWORD,
+                Message: error_message.INVALID_PASSWORD,
               });
             }
           } else {
             res.status(500).json({
               status: "Fail",
-              message: process.env.NUMBER_EXISTE,
+              message: error_message.NUMBER_EXISTE,
             });
           }
         } else {
           return res
             .status(400)
-            .json({ status: "Fail", Message: process.env.USER_EXISTE });
+            .json({ status: "Fail", Message: error_message.EMAIL_EXISTE });
         }
       } else {
         return res
           .status(400)
-          .json({ status: "Fail", Message: process.env.INVADLI_EMAIL });
+          .json({ status: "Fail", Message: error_message.INVADLI_EMAIL });
       }
     }
   } catch (error) {
     console.log(error);
-    res.status(500).send({ status: "Fail", Message: process.env.SWW });
+    res.status(500).send({ status: "Fail", Message: error_message.SWW });
   }
 };
 
@@ -165,25 +161,25 @@ export const signIn = async (req, res) => {
     if (!email && !password) {
       res.status(500).json({
         status: "Fail",
-        Message: process.env.EMPTY_LOGIN_ALL,
+        Message: error_message.EMPTY_LOGIN_ALL,
       });
     } else if (!email) {
       res
         .status(500)
-        .json({ status: "Fail", Message: process.env.EMPTY_EMAIL });
+        .json({ status: "Fail", Message: error_message.EMPTY_EMAIL });
     } else if (!password) {
       res
         .status(500)
-        .json({ status: "Fail", Message: process.env.EMPTY_PASSWORD });
+        .json({ status: "Fail", Message: error_message.EMPTY_PASSWORD });
     } else {
       if (!valid_email) {
         return res
           .status(404)
-          .json({ status: "Fail", Message: process.env.INVADLI_EMAIL });
+          .json({ status: "Fail", Message: error_message.INVADLI_EMAIL });
       } else if (!valid_password) {
         return res.status(404).json({
           status: "Fail",
-          Message: process.env.INVALID_PASSWORD,
+          Message: error_message.INVALID_PASSWORD,
         });
       } else {
         const existinguser = await users.findOne({ userEmail: email });
@@ -211,17 +207,17 @@ export const signIn = async (req, res) => {
           } else {
             res
               .status(500)
-              .json({ status: "Fail", Message: process.env.INCORRECT_PASS });
+              .json({ status: "Fail", Message: error_message.INCORRECT_PASS });
           }
         } else {
           res
             .status(500)
-            .json({ status: "Fail", Message: process.env.INCORRECT_EMAIL });
+            .json({ status: "Fail", Message: error_message.INCORRECT_EMAIL });
         }
       }
     }
   } catch (err) {
     console.log(err);
-    res.status(500).json({ status: "Fail", Message: process.env.SWW });
+    res.status(500).json({ status: "Fail", Message: error_message.SWW });
   }
 };

@@ -1,6 +1,7 @@
 // Order router.//
 
 import mongoose from "mongoose";
+import * as error_message from "../messages/error.js";
 
 // import model files...
 import order from "../models/order.js";
@@ -35,9 +36,11 @@ export const orderProduct = async (req, res) => {
     } else if (!prodcutId) {
       res
         .status(500)
-        .send({ Status: "Fail", Message: process.env.EMPTY_PRODCUTID });
+        .send({ Status: "Fail", Message: error_message.EMPTY_PRODCUTID });
     } else if (!mongoose.Types.ObjectId.isValid(prodcutId)) {
-      res.status(500).send({ Status: "Fail", Message: process.env.PRODCUT_ID });
+      res
+        .status(500)
+        .send({ Status: "Fail", Message: error_message.PRODCUT_ID });
     } else if (!ordetType) {
       res
         .status(500)
@@ -50,7 +53,7 @@ export const orderProduct = async (req, res) => {
     } else if (!(typeof orderQuntity == "number")) {
       res.status(500).send({
         Status: "Fail",
-        Message: process.env.NOT_ANUMBER_PROQTY,
+        Message: error_message.NOT_ANUMBER_PROQTY,
       });
     } else {
       const inserOrder = new order({
@@ -77,7 +80,7 @@ export const orderProduct = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    res.status(500).send({ Status: "Fail", Message: process.env.SWW });
+    res.status(500).send({ Status: "Fail", Message: error_message.SWW });
   }
 };
 
@@ -95,9 +98,9 @@ export const deleteProdcut = async (req, res) => {
     if (!orderId) {
       res
         .status(500)
-        .send({ Status: "Fail", Message: process.env.EMPTY_ORDERID });
+        .send({ Status: "Fail", Message: error_message.EMPTY_ORDERID });
     } else if (!mongoose.Types.ObjectId.isValid(orderId)) {
-      res.status(500).send({ Status: "Fail", Message: process.env.ORDER_ID });
+      res.status(500).send({ Status: "Fail", Message: error_message.ORDER_ID });
     } else {
       const deletedata = await order.findOneAndDelete({
         _id: orderId,
@@ -106,7 +109,7 @@ export const deleteProdcut = async (req, res) => {
       if (!deletedata) {
         res
           .status(400)
-          .json({ status: "Fail", Message: process.env.INVALID_TOKEN_ERROR });
+          .json({ status: "Fail", Message: error_message.INVALID_TOKEN_ERROR });
       } else {
         console.log(deletedata);
         await inprodcut(deletedata.productId, deletedata.orderQuntity);
@@ -118,7 +121,7 @@ export const deleteProdcut = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    res.status(500).send({ Status: "Fail", Message: process.env.SWW });
+    res.status(500).send({ Status: "Fail", Message: error_message.SWW });
   }
 };
 
@@ -143,9 +146,9 @@ export const updateOrder = async (req, res) => {
     } else if (!orderId) {
       res
         .status(500)
-        .json({ status: "Fail", message: process.env.EMPTY_ORDERID });
+        .json({ status: "Fail", message: error_message.EMPTY_ORDERID });
     } else if (!mongoose.Types.ObjectId.isValid(orderId)) {
-      res.status(500).send({ Status: "Fail", Message: process.env.ORDER_ID });
+      res.status(500).send({ Status: "Fail", Message: error_message.ORDER_ID });
     } else if (!ordetType) {
       res
         .status(500)
@@ -158,7 +161,7 @@ export const updateOrder = async (req, res) => {
     } else if (!(typeof orderQuntity == "number")) {
       res.status(500).send({
         Status: "Fail",
-        Message: process.env.NOT_ANUMBER_PROQTY,
+        Message: error_message.NOT_ANUMBER_PROQTY,
       });
     } else if (
       ordetType != "Online" &&
@@ -192,7 +195,7 @@ export const updateOrder = async (req, res) => {
           if (!updateOrder) {
             res.status(400).send({
               status: "Fail",
-              Message: process.env.INVALID_TOKEN_ERROR,
+              Message: error_message.INVALID_TOKEN_ERROR,
             });
           } else {
             res.status(200).send({
@@ -214,7 +217,7 @@ export const updateOrder = async (req, res) => {
           if (!updateOrder) {
             res.status(400).send({
               status: "Fail",
-              Message: process.env.INVALID_TOKEN_ERROR,
+              Message: error_message.INVALID_TOKEN_ERROR,
             });
           } else {
             res.status(200).send({
@@ -234,7 +237,7 @@ export const updateOrder = async (req, res) => {
           if (!updateOrder) {
             res.status(400).send({
               status: "Fail",
-              Message: process.env.INVALID_TOKEN_ERROR,
+              Message: error_message.INVALID_TOKEN_ERROR,
             });
           } else {
             res.status(200).send({
@@ -249,7 +252,7 @@ export const updateOrder = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    res.status(500).send({ Status: "Fail", Message: process.env.SWW });
+    res.status(500).send({ Status: "Fail", Message: error_message.SWW });
   }
 };
 
@@ -267,7 +270,7 @@ export const getAllOrder = async (req, res) => {
     res.status(200).send({ Status: "Success", Orders: getdata });
   } catch (error) {
     console.log(error);
-    res.status(500).send({ Status: "Fail", Message: process.env.SWW });
+    res.status(500).send({ Status: "Fail", Message: error_message.SWW });
   }
 };
 
@@ -285,9 +288,9 @@ export const getOneOrderDetails = async (req, res) => {
     if (!orderId) {
       res
         .status(500)
-        .send({ status: "Fail", Message: process.env.EMPTY_ORDERID });
+        .send({ status: "Fail", Message: error_message.EMPTY_ORDERID });
     } else if (!mongoose.Types.ObjectId.isValid(orderId)) {
-      res.status(500).send({ status: "Fail", Message: process.env.ORDER_ID });
+      res.status(500).send({ status: "Fail", Message: error_message.ORDER_ID });
     } else {
       const findOrder = await order.findById({ _id: orderId });
       if (!findOrder) {
@@ -300,7 +303,10 @@ export const getOneOrderDetails = async (req, res) => {
         if (!orderByFilter) {
           res
             .status(400)
-            .json({ status: "Fail", Message: process.env.INVALID_TOKEN_ERROR });
+            .json({
+              status: "Fail",
+              Message: error_message.INVALID_TOKEN_ERROR,
+            });
         } else {
           const result = await getOneOrderWithproduct(orderId);
           res.status(200).send({ status: "Success", Data: result });
@@ -309,6 +315,6 @@ export const getOneOrderDetails = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    res.status(500).send({ Status: "Fail", Message: process.env.SWW });
+    res.status(500).send({ Status: "Fail", Message: error_message.SWW });
   }
 };

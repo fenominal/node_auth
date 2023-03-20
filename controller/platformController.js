@@ -84,7 +84,7 @@ export const updatePlatform = async (req, res) => {
     ) {
       res
         .status(404)
-        .send({ status: "Fail", Message: process.env.INSERT_PLATFORM });
+        .send({ status: "Fail", Message: error_message.INSERT_PLATFORM });
     } else {
       const findplaatform = await platfrom.findById({ _id: platfromId });
       if (findplaatform) {
@@ -104,7 +104,7 @@ export const updatePlatform = async (req, res) => {
         if (!updateProdcut) {
           res.status(400).send({
             status: "Fail",
-            Message: process.env.INVALID_TOKEN_ERROR,
+            Message: error_message.INVALID_TOKEN_ERROR,
           });
         } else {
           res.status(200).send({
@@ -163,7 +163,7 @@ export const deletePlatfrom = async (req, res) => {
         } else {
           res.status(400).send({
             status: "Fail",
-            Message: process.env.INVALID_TOKEN_ERROR,
+            Message: error_message.INVALID_TOKEN_ERROR,
           });
         }
       } else {
@@ -175,7 +175,7 @@ export const deletePlatfrom = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    res.status(500).send({ Status: "Fail", Error: process.env.SWW });
+    res.status(500).send({ Status: "Fail", Error: error_message.SWW });
   }
 };
 
@@ -217,7 +217,7 @@ export const getOnePlatform = async (req, res) => {
         if (Object.keys(findeplatform).length === 0) {
           res.status(404).send({
             status: "Fail",
-            Message: process.env.INVALID_TOKEN_ERROR,
+            Message: error_message.INVALID_TOKEN_ERROR,
           });
         } else {
           res.status(200).send({
@@ -229,7 +229,7 @@ export const getOnePlatform = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    res.status(500).send({ Status: "Fail", Error: process.env.SWW });
+    res.status(500).send({ Status: "Fail", Error: error_message.SWW });
   }
 };
 
@@ -253,7 +253,7 @@ export const getAllPlatform = async (req, res) => {
       res.status(200).json({ status: "Success", Data: getAllPlatform });
     }
   } catch (error) {
-    res.status(500).send({ Status: "Fail", Error: process.env.SWW });
+    res.status(500).send({ Status: "Fail", Error: error_message.SWW });
     console.log(error);
   }
 };
@@ -323,7 +323,7 @@ export const inserPlaftformintoprodcut = async (req, res) => {
             if (!updateProdcut) {
               res.status(400).send({
                 status: "Fail",
-                Message: process.env.INVALID_TOKEN_ERROR,
+                Message: error_message.INVALID_TOKEN_ERROR,
               });
             } else {
               res.status(200).send({

@@ -1,6 +1,7 @@
 // Middleware to get user token....
 import jwt from "jsonwebtoken";
 import users from "../models/userModel.js";
+import * as error_message from "../messages/error.js";
 
 /**
  * Auth Middleware for Verfiy User Token...
@@ -21,25 +22,26 @@ const auth = async (req, res, next) => {
       token = authorization.split(" ")[1];
 
       // Verify Token
-      const { userID } = jwt.verify(token, process.env.JWT_SECRET);
+      const { userID } = jwt.verify(token, error_message.JWT_SECRET);
 
       // Get User Information From Token
-      req.user = await users.findById({_id:userID})
+      req.user = await users
+        .findById({ _id: userID })
         .select("-password")
         .select("-cpassword");
-        // console.log(req.user);
+      // console.log(req.user);
       next();
     } catch (error) {
       console.log(error);
       res
         .status(401)
-        .send({ status: "Fail", message: process.env.INVADLI_TOKEN });
+        .send({ status: "Fail", message: error_message.INVADLI_TOKEN });
     }
   }
   if (!token) {
     res
       .status(401)
-      .send({ status: "Fail", message: process.env.EMPTY_TOKEN });
+      .send({ status: "Fail", message: error_message.EMPTY_TOKEN });
   }
 };
 

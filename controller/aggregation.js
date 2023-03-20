@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 
 import users from "../models/userModel.js";
 import prodcutModel from "../models/prodcutModel.js";
+import * as error_message from "../messages/error.js";
 
 import {
   allUserProdcutPlatform,
@@ -50,9 +51,9 @@ export const getoneUserprodcutplatform = async (req, res) => {
   );
   const { id: _id } = req.user;
   if (!req.body.userID) {
-    res.status(500).send({ status: "Fail", Message: process.env.EMPTY_USERID });
+    res.status(500).send({ status: "Fail", Message: error_message.EMPTY_USERID });
   } else if (!mongoose.Types.ObjectId.isValid(req.body.userID)) {
-    res.status(500).send({ status: "Fail", Message: process.env.USER_ID });
+    res.status(500).send({ status: "Fail", Message: error_message.USER_ID });
   } else {
     const UserId = new mongoose.Types.ObjectId(req.body.userID);
     try {
@@ -62,18 +63,18 @@ export const getoneUserprodcutplatform = async (req, res) => {
         if (Object.keys(getData).length === 0) {
           res
             .status(500)
-            .send({ status: "Fail", Message: process.env.EMPTY_DATA });
+            .send({ status: "Fail", Message: error_message.EMPTY_DATA });
         } else {
           res.status(200).send({ status: "Success", Data: getData });
         }
       } else {
         res
           .status(500)
-          .send({ status: "Fail", Message: process.env.USER_NOTEXISTE });
+          .send({ status: "Fail", Message: error_message.USER_NOTEXISTE });
       }
     } catch (error) {
       console.log(error);
-      res.status(500).send({ status: "Fail", Message: process.env.SWW });
+      res.status(500).send({ status: "Fail", Message: error_message.SWW });
     }
   }
 };
@@ -135,9 +136,9 @@ export const getOneUserProdcut = async (req, res) => {
     if (!req.body.userID) {
       res
         .status(500)
-        .send({ status: "Fail", Message: process.env.EMPTY_USERID });
+        .send({ status: "Fail", Message: error_message.EMPTY_USERID });
     } else if (!mongoose.Types.ObjectId.isValid(req.body.userID)) {
-      res.status(500).send({ status: "Fail", Message: process.env.USER_ID });
+      res.status(500).send({ status: "Fail", Message: error_message.USER_ID });
     } else {
       var id = new mongoose.Types.ObjectId(req.body.userID);
       const getUserByID = await users.findById({ _id: id });
@@ -146,7 +147,7 @@ export const getOneUserProdcut = async (req, res) => {
         if (Object.keys(data).length === 0) {
           res
             .status(200)
-            .send({ status: "Fail", Message: process.env.EMPTY_DATA });
+            .send({ status: "Fail", Message: error_message.EMPTY_DATA });
         } else {
           let var1 = Object.entries(data);
           const var2 = var1[0];
@@ -163,7 +164,7 @@ export const getOneUserProdcut = async (req, res) => {
       } else {
         res.status(500).send({
           status: "Fail",
-          Message: process.env.USER_NOTEXISTE,
+          Message: error_message.USER_NOTEXISTE,
         });
       }
     }
@@ -171,7 +172,7 @@ export const getOneUserProdcut = async (req, res) => {
     console.log(error);
     res.status(500).send({
       status: "Fail",
-      Message: process.env.SWW,
+      Message: error_message.SWW,
     });
   }
 };
@@ -211,16 +212,16 @@ export const getUserFromProdut = async (req, res) => {
     if (!req.body.prodcutId) {
       res
         .status(500)
-        .send({ status: "Fail", Message: process.env.EMPTY_PRODCUTID });
+        .send({ status: "Fail", Message: error_message.EMPTY_PRODCUTID });
     } else if (!mongoose.Types.ObjectId.isValid(req.body.prodcutId)) {
-      res.status(500).send({ status: "Fail", Message: process.env.PRODCUT_ID });
+      res.status(500).send({ status: "Fail", Message: error_message.PRODCUT_ID });
     } else {
       var id = new mongoose.Types.ObjectId(req.body.prodcutId);
       const getProdcutByName = await prodcutModel.find({ _id: id });
       if (Object.keys(getProdcutByName).length === 0) {
         res
           .status(404)
-          .send({ status: "Fail", Message: process.env.PRODCUT_NOTEXISTE });
+          .send({ status: "Fail", Message: error_message.PRODCUT_NOTEXISTE });
       } else {
         const getUserWithProdcut = await getProdcutUser(id);
         res
@@ -230,6 +231,6 @@ export const getUserFromProdut = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    res.status(200).send({ status: "Fail", Message: process.env.SWW });
+    res.status(200).send({ status: "Fail", Message: error_message.SWW });
   }
 };

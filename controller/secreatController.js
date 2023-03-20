@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import validator from "validator";
 import passwordValidator from "password-validator";
+import * as error_message from "../messages/error.js";
 
 import users from "../models/userModel.js";
 
@@ -64,25 +65,25 @@ export const selfPassword = async (req, res) => {
           } else {
             res.status(400).send({
               status: "Fail",
-              message: process.env.PASS_CPASS_MISSMATCH,
+              message: error_message.PASS_CPASS_MISSMATCH,
             });
           }
         } else {
           res.status(400).send({
             status: "Fail",
-            message: process.env.INVALID_PASSWORD,
+            message: error_message.INVALID_PASSWORD,
           });
         }
       } else {
         res.status(400).send({
           status: "Fail",
-          message: process.env.EMPTY_CONFORM_PASSWORD,
+          message: error_message.EMPTY_CONFORM_PASSWORD,
         });
       }
     } else {
       res.status(400).send({
         status: "Fail",
-        message: process.env.EMPTY_PASSWORD,
+        message: error_message.EMPTY_PASSWORD,
       });
     }
   } else {
@@ -119,60 +120,53 @@ export const profileUpdate = async (req, res) => {
     if (!lowerEmail && !fullName && !mobile) {
       res.status(500).json({
         status: "Fail",
-        message: process.env.EMPTY_LOGIN_ALL,
+        message: error_message.EMPTY_LOGIN_ALL,
       });
     } else if (!lowerEmail) {
       res
         .status(500)
-        .json({ status: "Fail", message: process.env.EMPTY_EMAIL });
+        .json({ status: "Fail", message: error_message.EMPTY_EMAIL });
     } else if (!fullName) {
       res.status(500).json({
         status: "Fail",
-        message: process.env.EMPTY_FULLNAME,
-      });
-    } else if (fullName.length < 2) {
-      res.status(500).json({
-        status: "Fail",
-        message: "Full Name Have More Than 3 Charater..",
+        message: error_message.EMPTY_FULLNAME,
       });
     } else if (!mobile) {
       res.status(500).json({
         status: "Fail",
-        message: process.env.EMPTY_CONFORM_MOBILE,
+        message: error_message.EMPTY_CONFORM_MOBILE,
       });
     } else if (!valid_email) {
       res
         .status(500)
-        .send({ status: "Fail", message: process.env.INVADLI_EMAIL });
+        .send({ status: "Fail", message: error_message.INVADLI_EMAIL });
     } else if (!valid_phone) {
-      res.status(500).send({
-        status: "Fail",
-        message: process.env.INVALID_PHONE,
-      });
+      res
+        .status(500)
+        .send({ status: "Fail", message: error_message.INVALID_PHONE });
     } else if (!(typeof mobile == "number")) {
-      res.status(500).json({
-        status: "Fail",
-        message: process.env.NOT_ANUMBER_PHONE,
-      });
+      res
+        .status(500)
+        .json({ status: "Fail", message: error_message.NOT_ANUMBER_PHONE });
     } else if (lowerEmail == logUserEmail) {
       res.status(500).send({
         status: "Fail",
-        message: process.env.EMAIL_USED,
+        message: error_message.EMAIL_USED,
       });
     } else if (logUserPhone == mobile) {
       res.status(500).send({
         status: "Fail",
-        message: process.env.NUMBER_EXISTE,
+        message: error_message.NUMBER_EXISTE,
       });
     } else if (existinguser) {
       res.status(500).send({
         status: "Fail",
-        message: process.env.USER_EXISTE,
+        message: error_message.EMAIL_EXISTE,
       });
     } else if (!(Object.keys(existinguserPhone).length === 0)) {
       res.status(500).json({
         status: "Fail",
-        message: process.env.NUMBER_EXISTE,
+        message: error_message.NUMBER_EXISTE,
       });
     } else {
       const updatedProfile = await users.findByIdAndUpdate(
@@ -198,7 +192,7 @@ export const profileUpdate = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    res.status(500).send({ status: "Fail", Message: process.env.SWW });
+    res.status(500).send({ status: "Fail", Message: error_message.SWW });
   }
 };
 
@@ -217,15 +211,15 @@ export const deleteUser = async (req, res) => {
     if (!userId) {
       res
         .status(500)
-        .send({ status: "Fail", Message: process.env.EMPTY_USERID });
+        .send({ status: "Fail", Message: error_message.EMPTY_USERID });
     } else if (!mongoose.Types.ObjectId.isValid(userId)) {
-      res.status(500).send({ status: "Fail", Message: process.env.USER_ID });
+      res.status(500).send({ status: "Fail", Message: error_message.USER_ID });
     } else {
       const finduseById = await users.findById({ _id: userId });
       if (!finduseById) {
         res
           .status(500)
-          .send({ status: "Fail", Message: process.env.USER_NOTEXISTE });
+          .send({ status: "Fail", Message: error_message.USER_NOTEXISTE });
       } else {
         const deleteUserById = await users.findByIdAndDelete({ _id: userId });
         res
@@ -235,7 +229,7 @@ export const deleteUser = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    res.status(500).send({ status: "Fail", Message: process.env.SWW });
+    res.status(500).send({ status: "Fail", Message: error_message.SWW });
   }
 };
 
@@ -256,7 +250,7 @@ export const getSelfData = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(_id)) {
       return res
         .status(400)
-        .send({ Status: "Fail", Message: "User Not Loggin..." });
+        .send({ Status: "Fail", Message: error_message.NOTLOGIN });
     }
     const UserData = await users.findById(
       { _id: logUserID },
@@ -265,7 +259,7 @@ export const getSelfData = async (req, res) => {
 
     res.status(200).json({ Status: "Success", Data: UserData });
   } catch (error) {
-    res.status(400).json({ Status: "Fail", Message: "User Not Loggin..." });
+    res.status(400).json({ Status: "Fail", Message: error_message.NOTLOGIN });
   }
 };
 
@@ -405,25 +399,25 @@ export const updateEmail = async (req, res) => {
           } else {
             res.status(400).send({
               status: "Fail",
-              message: process.env.USER_EXISTE,
+              message: error_message.USER_EXISTE,
             });
           }
         } else {
           res.status(400).send({
             status: "Fail",
-            message: process.env.EMAIL_USED,
+            message: error_message.EMAIL_USED,
           });
         }
       } else {
         res.status(400).send({
           status: "Fail",
-          message: process.env.INVADLI_EMAIL,
+          message: error_message.INVADLI_EMAIL,
         });
       }
     } else {
       res
         .status(400)
-        .send({ status: "Fail", message: process.env.EMPTY_EMAIL });
+        .send({ status: "Fail", message: error_message.EMPTY_EMAIL });
     }
   } catch (err) {
     res.status(400).send({ status: "Fail", message: `${err}` });

@@ -2,6 +2,8 @@
 import prodcutModel from "../models/prodcutModel.js";
 import users from "../models/userModel.js";
 
+import * as error_message from "../messages/error.js";
+
 // Import servicess
 import { getUserProduct } from "../service/getUserProdcut.js";
 import { iprodcut, deprodcut } from "../service/count.js";
@@ -62,13 +64,13 @@ export const insertProdcut = async (req, res) => {
         console.log(error);
         res.status(500).send({
           Status: "Fail",
-          Message: process.env.SWW,
+          Message: error_message.SWW,
         });
       }
     }
   } catch (error) {
     console.log(error);
-    res.status(500).send({ Status: "Fail", Message: process.env.SWW });
+    res.status(500).send({ Status: "Fail", Message: error_message.SWW });
   }
 };
 
@@ -101,7 +103,10 @@ export const deletSelfProdcut = async (req, res) => {
         if (!deletedata) {
           res
             .status(400)
-            .json({ status: "Fail", Message: process.env.INVALID_TOKEN_ERROR });
+            .json({
+              status: "Fail",
+              Message: error_message.INVALID_TOKEN_ERROR,
+            });
         } else {
           await deprodcut(_id);
           res.status(200).json({
@@ -119,7 +124,7 @@ export const deletSelfProdcut = async (req, res) => {
   } catch (error) {
     res.status(500).send({
       Status: "Fail",
-      Message: process.env.PRODCUT_ID,
+      Message: error_message.PRODCUT_ID,
     });
   }
 };
@@ -203,7 +208,7 @@ export const updateSelfProdcut = async (req, res) => {
         if (!updateProdcut) {
           res.status(400).send({
             status: "Fail",
-            Message: process.env.INVALID_TOKEN_ERROR,
+            Message: error_message.INVALID_TOKEN_ERROR,
           });
         } else {
           res.status(200).send({
@@ -236,7 +241,7 @@ export const getAllProduct = async (req, res) => {
     res.status(200).send({ Status: "Success", Prodcuts: getAllProdcut });
   } catch (error) {
     console.log(error);
-    res.status(500).send({ Status: "Fail", Message: process.env.SWW });
+    res.status(500).send({ Status: "Fail", Message: error_message.SWW });
   }
   const { id: _id } = req.user;
 };
@@ -292,7 +297,7 @@ export const getSelfOnProdcut = async (req, res) => {
           console.log(Data);
           res.status(404).send({
             status: "Fail",
-            Message: process.env.INVALID_TOKEN_ERROR,
+            Message: error_message.INVALID_TOKEN_ERROR,
           });
         } else {
           res.status(200).send({

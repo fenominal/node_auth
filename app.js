@@ -11,7 +11,6 @@ import dotenv from "dotenv";
 //Connection file..
 import connectDB from "./db/conn.js";
 
-// console.log(error.INVADLI_TOKEN);
 // Router Files..
 import router from "./routers/user.js";
 import secure from "./routers/secrate.js";

@@ -22,7 +22,7 @@ const auth = async (req, res, next) => {
       token = authorization.split(" ")[1];
 
       // Verify Token
-      const { userID } = jwt.verify(token, error_message.JWT_SECRET);
+      const { userID } = jwt.verify(token, process.env.JWT_SECRET);
 
       // Get User Information From Token
       req.user = await users

@@ -196,13 +196,13 @@ export const signIn = async (req, res) => {
               { userID: existinguser._id },
               process.env.JWT_SECRET,
               { expiresIn: "2d" }
-            ); // Generate Token with user id....
+            ); // Generate Token with user id ...
 
             res.send({
               status: "Success",
               message: process.env.LOGIN_SUCCESS,
               UserId: existinguser._id,
-              token: token,
+              Token: token,
             });
           } else {
             res

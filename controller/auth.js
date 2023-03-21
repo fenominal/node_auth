@@ -173,11 +173,11 @@ export const signIn = async (req, res) => {
         .json({ status: "Fail", Message: error_message.EMPTY_PASSWORD });
     } else {
       if (!valid_email) {
-        return res
+        res
           .status(404)
           .json({ status: "Fail", Message: error_message.INVADLI_EMAIL });
       } else if (!valid_password) {
-        return res.status(404).json({
+        res.status(404).json({
           status: "Fail",
           Message: error_message.INVALID_PASSWORD,
         });

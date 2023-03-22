@@ -3,7 +3,7 @@
 import mongoose from "mongoose";
 
 /**
- * Controller Function for SignIn.
+ * Controller Function for Connection.
  * @author Patel Ayush
  * @returns true or false.
  */

@@ -3,7 +3,6 @@
 // import statements from node modules
 import express from "express";
 import dotenv from "dotenv";
-
 // import cookieParser from "cookie-parser";
 
 // import from files for other js file. //
@@ -30,6 +29,7 @@ const app = express();
 app.use(express.json({ limit: "30mb", extended: true })); // use for uplode file..
 // app.use(cookieParser());// use coockie in project ..
 app.use(express.urlencoded({ limit: "30mb", extended: true })); // use for encode url..
+app.use("/static", express.static("public"));
 
 // aplication diffrent router location...
 app.use("/", router); // normal router..
